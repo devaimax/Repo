@@ -1,0 +1,23 @@
+# cadvisor على كل Node
+docker service create \
+  --mode global \
+  --name cadvisor \
+  --network monitor-net \
+  --mount type=bind,src=/,dst=/rootfs:ro \
+  --mount type=bind,src=/var/run,dst=/var/run:rw \
+  --mount type=bind,src=/sys,dst=/sys:ro \
+  --mount type=bind,src=/var/lib/docker,dst=/var/lib/docker:ro \
+  --mount type=bind,src=/dev/disk,dst=/dev/disk:ro \
+  gcr.io/cadvisor/cadvisor:v0.47.1
+
+# node-exporter على كل Node
+docker service create \
+  --mode global \
+  --name node-exporter \
+  --network monitor-net \
+  --mount type=bind,src=/proc,dst=/host/proc:ro \
+  --mount type=bind,src=/sys,dst=/host/sys:ro \
+  --mount type=bind,src=/,dst=/rootfs:ro \
+  prom/node-exporter:v1.6.0 \
+  --path.procfs=/host/proc \
+  --path.sysfs=/host/sys
