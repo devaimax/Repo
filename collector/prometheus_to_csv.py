@@ -27,3 +27,5 @@ def collect_samples(prom, metrics, minutes):
                     }
                 )
     return pd.DataFrame(rows)
+
+
