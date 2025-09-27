@@ -46,11 +46,11 @@ if __name__ == "__main__":
     # بدء خادم Prometheus على المنفذ 8000 مع 0.0.0.0
     start_http_server(8000, addr="0.0.0.0")
 
-    service_name = os.getenv('SERVICE_NAME', 'fact_service')
+    n = int(os.getenv('N', 300000))  # القيمة الافتراضية 300k
+    default_service_name = f"fact_{n}"
+    service_name = os.getenv('SERVICE_NAME', default_service_name)
     node_name = os.getenv('NODE_NAME', 'unknown_node')
     container_id = os.getenv('HOSTNAME', 'unknown_container')
-
-    n = int(os.getenv('N', 300000))  # القيمة الافتراضية 300k
 
     # إنشاء ملف CSV مع الهيدر لو مش موجود
     if not os.path.exists("/app/results.csv"):

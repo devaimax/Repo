@@ -10,28 +10,43 @@ scrape_configs:
   - job_name: 'cadvisor'
     scrape_timeout: 30s
     dns_sd_configs:
-      - names: ['tasks.cadvisor']
+      - names: ['tasks.monitor_cadvisor']
         type: 'A'
         port: 8080
+    relabel_configs:
+      - source_labels: ['__meta_dns_name']
+        regex: 'tasks\\.monitor_(.+)'
+        replacement: '$1'
+        target_label: instance
 
   - job_name: 'node-exporter'
     scrape_timeout: 30s
     dns_sd_configs:
-      - names: ['tasks.node-exporter']
+      - names: ['tasks.monitor_node-exporter']
         type: 'A'
         port: 9100
+    relabel_configs:
+      - source_labels: ['__meta_dns_name']
+        regex: 'tasks\\.monitor_(.+)'
+        replacement: '$1'
+        target_label: instance
 
   - job_name: 'custom_services'
     scrape_timeout: 30s
     dns_sd_configs:
       - names:
-          - 'tasks.fact_100k'
-          - 'tasks.fact_300k'
-          - 'tasks.fact_500k'
-          - 'tasks.matrix_4k'
-          - 'tasks.matrix_5k'
+          - 'tasks.monitor_fact_100k'
+          - 'tasks.monitor_fact_300k'
+          - 'tasks.monitor_fact_500k'
+          - 'tasks.monitor_matrix_4k'
+          - 'tasks.monitor_matrix_5k'
         type: 'A'
         port: 8000
+    relabel_configs:
+      - source_labels: ['__meta_dns_name']
+        regex: 'tasks\\.monitor_(.+)'
+        replacement: '$1'
+        target_label: job
 
 
 

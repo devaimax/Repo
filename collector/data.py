@@ -1,132 +1,167 @@
-from prometheus_api_client import PrometheusConnect
-from datetime import datetime, timedelta
+import argparse
+import datetime as dt
+from typing import List
+
 import pandas as pd
-import os
-import time
+from prometheus_api_client import PrometheusConnect
 
-def get_available_metrics(prom):
-    return set(prom.all_metrics())
 
-def find_first_existing_metric(possible_metrics, available_metrics):
-    for metric in possible_metrics:
-        if metric in available_metrics:
-            return metric
-    return None
+def collect_samples(prom: PrometheusConnect, metrics: List[str], minutes: int) -> pd.DataFrame:
+    """Fetch raw samples from Prometheus for the requested window."""
+    end = dt.datetime.now(dt.timezone.utc)
+    start = end - dt.timedelta(minutes=minutes)
 
-def collect_metric_range(prom, query, start_time, end_time, step, label):
-    print(f"[+] Collecting data for query: {query}")
-    try:
-        data = prom.custom_query_range(
-            query=query,
-            start_time=start_time,
-            end_time=end_time,
-            step=step
+    print(f"📊 DEBUG: start={start}, end={end}")  # للتأكد أن start < end
+
+    rows = []
+
+    for metric in metrics:
+        try:
+            data = prom.custom_query_range(
+                query=metric,
+                start_time=start,
+                end_time=end,
+                step="30s",
+            )
+        except Exception as e:
+            print(f"❌ Error fetching {metric}: {e}")
+            continue
+
+        if not data:
+            print(f"⚠️ No series returned for {metric} in the selected window.")
+            continue
+
+        for series in data:
+            labels = series["metric"]
+            for ts, val in series["values"]:
+                try:
+                    completed_at = dt.datetime.fromtimestamp(float(ts), tz=dt.timezone.utc)
+                    duration = float(val)
+                    service_label = labels.get("service_name", "unknown")
+                    service_type = "factorial" if "factorial" in metric else "matrix" if "matrix" in metric else "other"
+                    container = labels.get("container_id") or labels.get("container") or labels.get("pod") or "unknown"
+                    node = labels.get("node_name") or labels.get("instance") or "unknown"
+                    task = labels.get("task") or labels.get("swarm_task") or "unknown"
+
+                    rows.append(
+                        {
+                            "metric": metric,
+                            "service": service_label,
+                            "service_type": service_type,
+                            "node": node,
+                            "container": container,
+                            "task": task,
+                            "job": labels.get("job", "unknown"),
+                            "instance": labels.get("instance", "unknown"),
+                            "address": labels.get("__address__", labels.get("instance", "unknown")),
+                            "duration_seconds": duration,
+                            "completed_at": completed_at,
+                            "started_at": completed_at - dt.timedelta(seconds=duration),
+                        }
+                    )
+                except Exception as ex:
+                    print(f"⚠️ Skipped invalid sample for {metric}: {ex}")
+                    continue
+
+    df = pd.DataFrame(rows)
+    if df.empty:
+        return df
+
+    df["duration_seconds"] = df["duration_seconds"].astype(float)
+    df["completed_at"] = pd.to_datetime(df["completed_at"], utc=True)
+    df["started_at"] = pd.to_datetime(df["started_at"], utc=True)
+    df.sort_values("completed_at", inplace=True)
+    df.reset_index(drop=True, inplace=True)
+    return df
+
+
+def compute_weights(df: pd.DataFrame) -> pd.DataFrame:
+    """Produce automatic weights per (metric, service) based on inverse mean."""
+    if df.empty:
+        return pd.DataFrame(
+            columns=["service_type", "metric", "service", "weight", "mean", "std", "samples"]
         )
-    except Exception as e:
-        print(f"[!] Error querying Prometheus: {e}")
-        return pd.DataFrame()
 
-    if not data:
-        print(f"[!] No data for: {query}")
-        return pd.DataFrame()
-
-    records = []
-    for result in data:
-        labels = result.get("metric", {})
-        node = labels.get("instance")
-        container = labels.get("container") or labels.get("name")
-        task = labels.get("task")
-        process = labels.get("process") or labels.get("comm")
-
-        for ts, val in result["values"]:
-            try:
-                records.append({
-                    "timestamp": datetime.fromtimestamp(float(ts)).strftime('%Y-%m-%d %H:%M:%S'),
-                    "start_time": start_time.strftime('%Y-%m-%d %H:%M:%S'),
-                    "end_time": end_time.strftime('%Y-%m-%d %H:%M:%S'),
-                    "node": node,
-                    "container": container,
-                    "task_name": task,
-                    "process_name": process,
-                    label: float(val)
-                })
-            except Exception:
-                continue
-
-    return pd.DataFrame(records)
-
-def main():
-    prom = PrometheusConnect(url="http://localhost:9090", disable_ssl=True)
-
-    while True:
-        print(f"\n=== Collecting at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===")
-        end_time = datetime.now()
-        start_time = end_time - timedelta(minutes=1)
-        step = "15s"
-
-        available_metrics = get_available_metrics(prom)
-
-        cpu_candidates = [
-            'rate(container_cpu_usage_seconds_total[1m])',
-            'process_cpu_seconds_total',
-            'node_cpu_seconds_total',
-        ]
-        mem_candidates = [
-            'container_memory_usage_bytes',
-            'process_resident_memory_bytes',
-            'node_memory_MemAvailable_bytes',
-        ]
-
-        all_data = []
-
-        # CPU
-        cpu_metric = find_first_existing_metric(
-            [q.split('(')[-1].rstrip(')') if 'rate(' in q else q for q in cpu_candidates],
-            available_metrics
+    summary = (
+        df.groupby(["service_type", "metric", "service"], dropna=False)
+        .agg(
+            mean=("duration_seconds", "mean"),
+            std=("duration_seconds", "std"),
+            samples=("duration_seconds", "size"),
         )
-        if cpu_metric:
-            full_cpu_query = next(q for q in cpu_candidates if cpu_metric in q)
-            cpu_df = collect_metric_range(prom, full_cpu_query, start_time, end_time, step, "cpu_usage")
-            if not cpu_df.empty:
-                all_data.append(cpu_df)
+        .reset_index()
+    )
 
-        # Memory
-        mem_metric = find_first_existing_metric(mem_candidates, available_metrics)
-        if mem_metric:
-            mem_df = collect_metric_range(prom, mem_metric, start_time, end_time, step, "memory_usage")
-            if not mem_df.empty:
-                all_data.append(mem_df)
+    # Avoid division by zero and normalise per-metric to sum to one.
+    summary["raw_weight"] = 1.0 / summary["mean"].clip(lower=1e-9)
+    summary["weight"] = summary["raw_weight"] / summary.groupby("metric")["raw_weight"].transform("sum")
 
-        if all_data:
-            merged_df = all_data[0]
-            for df in all_data[1:]:
-                merged_df = pd.merge(
-                    merged_df, df,
-                    on=["timestamp", "node", "container", "task_name", "process_name", "start_time", "end_time"],
-                    how="outer"
-                )
+    return summary[["service_type", "metric", "service", "weight", "mean", "std", "samples"]]
 
-            # Clean and prepare
-            merged_df = merged_df.drop_duplicates().sort_values("timestamp")    
-            merged_df["cpu_usage"] = merged_df["cpu_usage"].fillna(0).astype(float)
-            merged_df["memory_usage"] = merged_df["memory_usage"].fillna(0).astype(float)
-            merged_df["duration_sec"] = (
-                pd.to_datetime(merged_df["end_time"]) - pd.to_datetime(merged_df["start_time"])
-            ).dt.total_seconds()
 
-            merged_df["high_pressure"] = (
-                (merged_df["cpu_usage"] > 0.8) | (merged_df["memory_usage"] > 900_000_000)
-            ).astype(int)
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Export Prometheus samples with automatic weighting")
+    parser.add_argument(
+        "--prom-url",
+        default="http://localhost:9090",
+        help="Prometheus base URL (default: http://localhost:9090)",
+    )
+    parser.add_argument(
+        "--metrics",
+        nargs="+",
+        default=["factorial_execution_time_seconds", "matrix_multiplication_time_seconds"],
+        help="Metric names to export",
+    )
+    parser.add_argument(
+        "--window-minutes",
+        type=int,
+        default=10,
+        help="Lookback window size in minutes (default: 10)",
+    )
+    parser.add_argument(
+        "--results-out",
+        default="results.csv",
+        help="Path for raw samples CSV output (default: results.csv)",
+    )
+    parser.add_argument(
+        "--weights-out",
+        default="service_weights.csv",
+        help="Path for aggregated weights CSV output (default: service_weights.csv)",
+    )
+    return parser.parse_args()
 
-            # Save
-            output_file = "mydata_Set07.csv"
-            file_exists = os.path.isfile(output_file)
-            merged_df.to_csv(output_file, index=False, mode="a", header=not file_exists)
-            print(f"[✔] Appended {len(merged_df)} rows to {output_file}")
-        else:
-            print("[!] No usable data collected this round.")
 
-        time.sleep(60)
+def main() -> None:
+    args = parse_args()
+
+    prom = PrometheusConnect(url=args.prom_url, disable_ssl=not args.prom_url.startswith("https"))
+
+    samples = collect_samples(prom, args.metrics, args.window_minutes)
+    samples.to_csv(args.results_out, index=False)
+
+    weights = compute_weights(samples)
+    weights.to_csv(args.weights_out, index=False)
+
+    if samples.empty:
+        print("⚠️ No samples retrieved; produced empty CSV files.")
+        return
+
+    unique_services = samples["service"].nunique(dropna=False)
+    unique_nodes = samples["node"].nunique(dropna=False)
+    window_start = samples["started_at"].min()
+    window_end = samples["completed_at"].max()
+
+    print(
+        "📈 Captured "
+        f"{len(samples)} samples across {unique_services} services spanning {unique_nodes} nodes "
+        f"({window_start.isoformat()} → {window_end.isoformat()})."
+    )
+
+    if weights.empty:
+        print("⚠️ No usable samples for computing weights; check metric coverage.")
+    else:
+        print(f"✅ Saved {args.results_out} and {args.weights_out} with automatic weights.")
+
 
 if __name__ == "__main__":
     main()

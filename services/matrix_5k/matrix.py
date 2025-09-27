@@ -119,11 +119,11 @@ if __name__ == "__main__":
     # بدء خادم Prometheus على المنفذ 8000 مع 0.0.0.0 (مهم للـ overlay)
     start_http_server(8000, addr="0.0.0.0")
 
-    service_name = os.getenv('SERVICE_NAME', 'matrix_service')
+    size = int(os.getenv('MATRIX_SIZE', 5000))
+    default_service_name = f"matrix_{size}"
+    service_name = os.getenv('SERVICE_NAME', default_service_name)
     node_name = os.getenv('NODE_NAME', 'unknown_node')
     container_id = os.getenv('HOSTNAME', 'unknown_container')
-
-    size = int(os.getenv('MATRIX_SIZE', 5000))
 
     # إنشاء ملف CSV مع الهيدر لو مش موجود
     if not os.path.exists("/app/results.csv"):

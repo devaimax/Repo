@@ -1,0 +1,10 @@
+timestamp,service,node,cpu_weight,mem_weight,node_score,reason
+2025-09-27T08:11:15.669458,monitor_cadvisor,86eaae7b653c (10.0.1.98),0.62,0.38,63.86,Node '86eaae7b653c (10.0.1.98)' selected by weighted strategy
+2025-09-27T08:22:34.962657,monitor_fact_100k,86eaae7b653c (10.0.1.98),0.62,0.38,63.86,Node '86eaae7b653c (10.0.1.98)' selected by weighted strategy
+2025-09-27T08:29:52.276384,monitor_fact_300k,86eaae7b653c (10.0.1.98),0.62,0.38,63.86,Node '86eaae7b653c (10.0.1.98)' selected by weighted strategy
+2025-09-27T08:30:17.078997,monitor_fact_500k,86eaae7b653c (10.0.1.98),0.62,0.38,63.86,Node '86eaae7b653c (10.0.1.98)' selected by weighted strategy
+2025-09-27T08:34:10.501653,monitor_grafana,86eaae7b653c (10.0.1.98),0.62,0.38,63.86,Node '86eaae7b653c (10.0.1.98)' selected by weighted strategy
+2025-09-27T08:34:10.618291,monitor_matrix_4k,86eaae7b653c (10.0.1.98),0.62,0.38,63.86,Node '86eaae7b653c (10.0.1.98)' selected by weighted strategy
+2025-09-27T08:34:10.662740,monitor_matrix_5k,86eaae7b653c (10.0.1.98),0.62,0.38,63.86,Node '86eaae7b653c (10.0.1.98)' selected by weighted strategy
+2025-09-27T08:34:10.713244,monitor_node-exporter,86eaae7b653c (10.0.1.98),0.62,0.38,63.86,Node '86eaae7b653c (10.0.1.98)' selected by weighted strategy
+2025-09-27T08:34:10.777722,monitor_prometheus,86eaae7b653c (10.0.1.98),0.62,0.38,63.86,Node '86eaae7b653c (10.0.1.98)' selected by weighted strategy
