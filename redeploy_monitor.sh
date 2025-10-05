@@ -3,7 +3,13 @@
 STACK_NAME="monitor"
 CONFIG_NAME="monitor_prometheus_config"
 PROM_FILE="./prometheus.yml"
-COMPOSE_FILE="./docker-compose.yml"
+COMPOSE_ARGS=("-c" "docker-compose.yml")
+
+if [[ "$1" == "--enhanced" ]]; then
+  echo "⚙️ Using enhanced overrides (host networking + static targets)"
+  PROM_FILE="./prometheus.enhanced.yml"
+  COMPOSE_ARGS+=("-c" "docker-compose.enhanced.yml")
+fi
 
 echo "🚀 [1/4] حذف الـ stack القديم ($STACK_NAME) إن وجد..."
 docker stack rm $STACK_NAME || true
@@ -17,8 +23,8 @@ docker config rm $CONFIG_NAME || true
 echo "🚀 [3/4] إنشاء config جديد من $PROM_FILE ..."
 docker config create $CONFIG_NAME $PROM_FILE
 
-echo "🚀 [4/4] نشر الـ stack ($STACK_NAME) باستخدام $COMPOSE_FILE ..."
-docker stack deploy -c $COMPOSE_FILE $STACK_NAME
+echo "🚀 [4/4] نشر الـ stack ($STACK_NAME) باستخدام الملفات المحددة ..."
+docker stack deploy "${COMPOSE_ARGS[@]}" $STACK_NAME
 
 echo "✅ الانتهاء! تحقق من الخدمات عبر:"
 echo "    docker service ls"

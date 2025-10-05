@@ -1,3 +1,0 @@
-service_type,metric,service,weight,mean,std,samples
-factorial,factorial_execution_time_seconds,fact_300000,0.7064594599292757,0.9608178320002134,0.14653546563336045,21
-factorial,factorial_execution_time_seconds,fact_500000,0.2935405400707243,2.312385357476506,0.12287658501428252,21

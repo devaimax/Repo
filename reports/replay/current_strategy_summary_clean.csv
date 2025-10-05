@@ -1,0 +1,16 @@
+strategy,service,avg_duration
+Spread (this work),factorial_100k,0.1354917047708742
+Spread (this work),factorial_300k,0.8869569572305129
+Spread (this work),factorial_500k,2.19205859258318
+Spread (this work),matrix_4k,1.5336324569998396
+Spread (this work),matrix_5k,2.964308873333417
+Manual (this work),factorial_100k,0.1345197524299562
+Manual (this work),factorial_300k,0.8869569572305129
+Manual (this work),factorial_500k,2.2241399242352333
+Manual (this work),matrix_4k,1.5336324569998396
+Manual (this work),matrix_5k,2.976701226999978
+Auto-weighted (this work),factorial_100k,0.1345197524299562
+Auto-weighted (this work),factorial_300k,0.9166925857645551
+Auto-weighted (this work),factorial_500k,2.2363548687618238
+Auto-weighted (this work),matrix_4k,1.5336324569998396
+Auto-weighted (this work),matrix_5k,2.9694879299411374

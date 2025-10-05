@@ -1,0 +1,23 @@
+{
+  "timestamp": "2025-10-05T10:15:38.502369+00:00",
+  "data": [
+    {
+      "name": "192.168.20.35",
+      "cpu_usage_percent": 5.4333333333286475,
+      "memory_usage_percent": 80.05432614477691,
+      "hostname": "Master"
+    },
+    {
+      "name": "192.168.20.5",
+      "cpu_usage_percent": 100.0,
+      "memory_usage_percent": 23.134972538100584,
+      "hostname": "node-01"
+    },
+    {
+      "name": "192.168.20.6",
+      "cpu_usage_percent": 18.983333333332354,
+      "memory_usage_percent": 21.538050586739864,
+      "hostname": "node-02"
+    }
+  ]
+}

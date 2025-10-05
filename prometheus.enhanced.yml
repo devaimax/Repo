@@ -1,0 +1,122 @@
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+  scrape_timeout: 25s  # Default timeout, must be less than scrape_interval
+
+rule_files:
+  - "/etc/prometheus/alert.rules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_timeout: 10s  # Prometheus metrics are fast
+    static_configs:
+      - targets: ['192.168.20.35:9090']
+        labels:
+          cluster: "swarm-lab"
+          role: "manager"
+          node: "Master"
+          service: "prometheus"
+          job_type: "monitoring"
+          ip: "192.168.20.35"
+
+  - job_name: 'cadvisor'
+    scrape_timeout: 25s  # Increased timeout for cAdvisor (can be slow)
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['192.168.20.35:8080']
+        labels:
+          cluster: "swarm-lab"
+          role: "manager"
+          node: "Master"
+          service: "cadvisor"
+          ip: "192.168.20.35"
+      - targets: ['192.168.20.5:8080']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-0a"
+          service: "cadvisor"
+          ip: "192.168.20.5"
+      - targets: ['192.168.20.6:8080']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-0b"
+          service: "cadvisor"
+          ip: "192.168.20.6"
+
+  - job_name: 'node-exporter'
+    scrape_timeout: 20s  # Node exporter is usually fast
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['192.168.20.35:9100']
+        labels:
+          cluster: "swarm-lab"
+          role: "manager"
+          node: "Master"
+          service: "node-exporter"
+          ip: "192.168.20.35"
+      - targets: ['192.168.20.5:9100']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-0a"
+          service: "node-exporter"
+          ip: "192.168.20.5"
+      - targets: ['192.168.20.6:9100']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-0b"
+          service: "node-exporter"
+          ip: "192.168.20.6"
+
+  - job_name: 'custom_services'
+    scrape_timeout: 15s  # Custom services should respond quickly
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['192.168.20.35:18000']
+        labels:
+          cluster: "swarm-lab"
+          role: "manager"
+          node: "Master"
+          service: "custom"
+          task: "fact_100k"
+          ip: "192.168.20.35"
+          purpose: "benchmark"
+      - targets: ['192.168.20.5:18010']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-0a"
+          service: "custom"
+          task: "fact_300k"
+          ip: "192.168.20.5"
+          purpose: "benchmark"
+      - targets: ['192.168.20.6:18020']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-0b"
+          service: "custom"
+          task: "fact_500k"
+          ip: "192.168.20.6"
+          purpose: "benchmark"
+      - targets: ['192.168.20.5:18030']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-0a"
+          service: "custom"
+          task: "matrix_4k"
+          ip: "192.168.20.5"
+          purpose: "benchmark"
+      - targets: ['192.168.20.6:18040']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-0b"
+          service: "custom"
+          task: "matrix_5k"
+          ip: "192.168.20.6"
+          purpose: "benchmark"

@@ -5,7 +5,14 @@ STACK_NAME="monitor"
 NETWORK_NAME="monitor-net"
 CONFIG_NAME="prometheus_config"
 PROM_FILE="./prometheus.yml"
+COMPOSE_ARGS=("-c" "docker-compose.yml")
 PROM_URL="http://localhost:9090/api/v1/targets"
+
+if [[ "$1" == "--enhanced" ]]; then
+  echo "⚙️ Using enhanced overrides (host networking + static targets)"
+  PROM_FILE="./prometheus.enhanced.yml"
+  COMPOSE_ARGS+=("-c" "docker-compose.enhanced.yml")
+fi
 
 echo "🚀 [1/6] إنشاء الشبكة overlay ($NETWORK_NAME) إذا لم تكن موجودة..."
 docker network inspect $NETWORK_NAME >/dev/null 2>&1 || \
@@ -18,11 +25,11 @@ sleep 10
 echo "🚀 [3/6] حذف config قديم ($CONFIG_NAME) إذا موجود..."
 docker config rm $CONFIG_NAME || true
 
-echo "🚀 [4/6] إنشاء config جديد لبروميثيوس..."
+echo "🚀 [4/6] إنشاء config جديد لبروميثيوس ($PROM_FILE)..."
 docker config create $CONFIG_NAME $PROM_FILE
 
 echo "🚀 [5/6] نشر الـ Stack ($STACK_NAME)..."
-docker stack deploy -c docker-compose.yml $STACK_NAME
+docker stack deploy "${COMPOSE_ARGS[@]}" $STACK_NAME
 
 echo "⏳ الانتظار 30 ثانية حتى تبدأ الخدمات..."
 sleep 30

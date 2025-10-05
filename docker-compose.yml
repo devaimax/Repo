@@ -6,6 +6,8 @@ services:
     configs:
       - source: prometheus_config
         target: /etc/prometheus/prometheus.yml
+      - source: alert_rules_config
+        target: /etc/prometheus/alert.rules.yml
     networks:
       - monitor-net
     ports:
@@ -41,6 +43,11 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
+    ports:
+      - target: 8080
+        published: 18050
+        protocol: tcp
+        mode: host
     networks:
       - monitor-net
     deploy:
@@ -55,48 +62,112 @@ services:
     command:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
+    ports:
+      - target: 9100
+        published: 9100
+        protocol: tcp
+        mode: host
     networks:
       - monitor-net
     deploy:
       mode: global
 
   fact_100k:
-    image: devaimax/fact_100k:latest
+    image: devaimax/factorial_100k:latest
+    ports:
+      - target: 8000
+        published: 18000
+        protocol: tcp
+        mode: host
     networks:
       - monitor-net
     deploy:
       replicas: 1
+      placement:
+        constraints:
+          - node.hostname == Master
 
   fact_300k:
-    image: devaimax/fact_300k:latest
+    image: devaimax/factorial_300k:latest
+    ports:
+      - target: 8000
+        published: 18010
+        protocol: tcp
+        mode: host
     networks:
       - monitor-net
     deploy:
       replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-01
 
   fact_500k:
-    image: devaimax/fact_500k:latest
+    image: devaimax/factorial_500k:latest
+    ports:
+      - target: 8000
+        published: 18020
+        protocol: tcp
+        mode: host
     networks:
       - monitor-net
     deploy:
       replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-02
 
   matrix_4k:
     image: devaimax/matrix_4k:latest
+    ports:
+      - target: 8000
+        published: 18030
+        protocol: tcp
+        mode: host
     networks:
       - monitor-net
     deploy:
       replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-01
 
   matrix_5k:
     image: devaimax/matrix_5k:latest
+    ports:
+      - target: 8000
+        published: 18040
+        protocol: tcp
+        mode: host
     networks:
       - monitor-net
     deploy:
       replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-02
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.1
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - monitor-net
+    ports:
+      - "9200:9200"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
 
 volumes:
   grafana-data:
+  elasticsearch-data:
 
 networks:
   monitor-net:
@@ -106,3 +177,5 @@ networks:
 configs:
   prometheus_config:
     file: ./prometheus.yml
+  alert_rules_config:
+    file: ./alert.rules.yml

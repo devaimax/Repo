@@ -1,0 +1,166 @@
+# # global:
+# #   scrape_interval: 45s
+
+# # scrape_configs:
+# #   - job_name: 'prometheus'
+# #     scrape_timeout: 30s
+# #     static_configs:
+# #       - targets: ['localhost:9090']
+
+# #   - job_name: 'cadvisor'
+# #     scrape_timeout: 30s
+# #     dns_sd_configs:
+# #       - names: ['tasks.monitor_cadvisor']
+# #         type: 'A'
+# #         port: 8080
+# #     relabel_configs:
+# #       - source_labels: ['__meta_dns_name']
+# #         regex: 'tasks\\.monitor_(.+)'
+# #         replacement: '$1'
+# #         target_label: instance
+
+# #   - job_name: 'node-exporter'
+# #     scrape_timeout: 30s
+# #     dns_sd_configs:
+# #       - names: ['tasks.monitor_node-exporter']
+# #         type: 'A'
+# #         port: 9100
+# #     relabel_configs:
+# #       - source_labels: ['__meta_dns_name']
+# #         regex: 'tasks\\.monitor_(.+)'
+# #         replacement: '$1'
+# #         target_label: instance
+
+# #   - job_name: 'custom_services'
+# #     scrape_timeout: 30s
+# #     dns_sd_configs:
+# #       - names:
+# #           - 'tasks.monitor_fact_100k'
+# #           - 'tasks.monitor_fact_300k'
+# #           - 'tasks.monitor_fact_500k'
+# #           - 'tasks.monitor_matrix_4k'
+# #           - 'tasks.monitor_matrix_5k'
+# #         type: 'A'
+# #         port: 8000
+# #     relabel_configs:
+# #       - source_labels: ['__meta_dns_name']
+# #         regex: 'tasks\\.monitor_(.+)'
+# #         replacement: '$1'
+# #         target_label: job
+
+
+
+# # global:
+# #   scrape_interval: 30s
+# #   evaluation_interval: 30s
+
+# # rule_files:
+# #   - "alert.rules.yml"
+
+# # scrape_configs:
+# #   - job_name: 'prometheus'
+# #     scrape_timeout: 30s
+# #     static_configs:
+# #       - targets: ['localhost:9090']
+
+# #   - job_name: 'cadvisor'
+# #     scrape_timeout: 30s
+# #     dns_sd_configs:
+# #       - names: ['tasks.monitor_cadvisor']
+# #         type: 'A'
+# #         port: 8080
+# #     relabel_configs:
+# #       - source_labels: ['__meta_dns_name']
+# #         regex: 'tasks\\.monitor_(.+)'
+# #         replacement: '$1'
+# #         target_label: instance
+
+# #   - job_name: 'node-exporter'
+# #     scrape_timeout: 30s
+# #     dns_sd_configs:
+# #       - names: ['tasks.monitor_node-exporter']
+# #         type: 'A'
+# #         port: 9100
+# #     relabel_configs:
+# #       - source_labels: ['__meta_dns_name']
+# #         regex: 'tasks\\.monitor_(.+)'
+# #         replacement: '$1'
+# #         target_label: instance
+
+# #   - job_name: 'custom_services'
+# #     scrape_timeout: 30s
+# #     dns_sd_configs:
+# #       - names:
+# #           - 'tasks.monitor_fact_100k'
+# #           - 'tasks.monitor_fact_300k'
+# #           - 'tasks.monitor_fact_500k'
+# #           - 'tasks.monitor_matrix_4k'
+# #           - 'tasks.monitor_matrix_5k'
+# #         type: 'A'
+# #         port: 8000
+# #     relabel_configs:
+# #       - source_labels: ['__meta_dns_name']
+# #         regex: 'tasks\\.monitor_(.+)'
+# #         replacement: '$1'
+# #         target_label: job
+
+
+# global:
+#   scrape_interval: 60s
+#   evaluation_interval: 60s
+
+# rule_files:
+#   - "alert.rules.yml"
+
+# scrape_configs:
+#   # Prometheus نفسه
+#   - job_name: 'prometheus'
+#     scrape_timeout: 60s
+#     static_configs:
+#       - targets: ['localhost:9090']
+
+#   # cAdvisor - global service
+#   - job_name: 'cadvisor'
+#     scrape_timeout: 60s
+#     dns_sd_configs:
+#       - names: ['tasks.monitor_cadvisor']
+#         type: 'A'
+#         port: 8080
+#     relabel_configs:
+#       - source_labels: ['__meta_dns_name']
+#         regex: 'tasks\\.monitor_(.+)'
+#         replacement: '$1'
+#         target_label: instance
+
+#   # Node exporter - global service
+#   - job_name: 'node-exporter'
+#     scrape_timeout: 60s
+#     dns_sd_configs:
+#       - names: ['tasks.monitor_node-exporter']
+#         type: 'A'
+#         port: 9100
+#     relabel_configs:
+#       - source_labels: ['__meta_dns_name']
+#         regex: 'tasks\\.monitor_(.+)'
+#         replacement: '$1'
+#         target_label: instance
+
+#   # Custom services (fact + matrix apps)
+#   - job_name: 'custom_services'
+#     scrape_timeout: 60s
+#     dns_sd_configs:
+#       - names:
+#           - 'tasks.monitor_fact_100k'
+#           - 'tasks.monitor_fact_300k'
+#           - 'tasks.monitor_fact_500k'
+#           - 'tasks.monitor_matrix_4k'
+#           - 'tasks.monitor_matrix_5k'
+#         type: 'A'
+#         port: 8000
+#     relabel_configs:
+#       - source_labels: ['__meta_dns_name']
+#         regex: 'tasks\\.monitor_(.+)'
+#         replacement: '$1'
+#         target_label: job
+
+# #docker service update --force monitor_prometheus
