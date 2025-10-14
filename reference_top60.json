@@ -1,0 +1,1498 @@
+[
+  {
+    "doi": "10.1109/netsoft57336.2023.10175431",
+    "title": "Latency-Aware Kubernetes Scheduling for Microservices Orchestration at the Edge",
+    "container": "2023 IEEE 9th International Conference on Network Softwarization (NetSoft)",
+    "year": 2023,
+    "volume": null,
+    "issue": null,
+    "page": "426-431",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Centofanti",
+        "given": "C."
+      },
+      {
+        "family": "Tiberti",
+        "given": "W."
+      },
+      {
+        "family": "Marotta",
+        "given": "A."
+      },
+      {
+        "family": "Graziosi",
+        "given": "F."
+      },
+      {
+        "family": "Cassioli",
+        "given": "D."
+      }
+    ]
+  },
+  {
+    "doi": "10.17762/ijritcc.v11i3.9863",
+    "title": "Microservices Container Security Orchestration Framework within Kubernetes and Docker for Business-Critical Applications within Digital Transformation",
+    "container": "International Journal on Recent and Innovation Trends in Computing and Communication",
+    "year": 2023,
+    "volume": "11",
+    "issue": "3",
+    "page": "332-336",
+    "publisher": "Auricle Technologies, Pvt., Ltd.",
+    "author": [
+      {
+        "family": "Amarjeet Singh",
+        "given": "Et. al"
+      }
+    ]
+  },
+  {
+    "doi": "10.32628/ijsrst24105254",
+    "title": "Comparative Analysis of Container Orchestration Platforms: Kubernetes vs. Docker Swarm",
+    "container": "International Journal of Scientific Research in Science and Technology",
+    "year": 2024,
+    "volume": "11",
+    "issue": "5",
+    "page": "526-543",
+    "publisher": "Technoscience Academy",
+    "author": [
+      {
+        "family": "Venkat Marella",
+        "given": ""
+      }
+    ]
+  },
+  {
+    "doi": "10.14569/ijacsa.2024.01510122",
+    "title": "Efficient Load-Balancing and Container Deployment for Enhancing Latency in an Edge Computing-Based IoT Network Using Kubernetes for Orchestration",
+    "container": "International Journal of Advanced Computer Science and Applications",
+    "year": 2024,
+    "volume": "15",
+    "issue": "10",
+    "page": null,
+    "publisher": "The Science and Information Organization",
+    "author": [
+      {
+        "family": "Mdemaya",
+        "given": "Garrik Brel Jagho"
+      },
+      {
+        "family": "Ndadji",
+        "given": "Milliam Maxime Zekeng"
+      },
+      {
+        "family": "Sindjoung",
+        "given": "Miguel Landry Foko"
+      },
+      {
+        "family": "Velempini",
+        "given": "Mthulisi"
+      }
+    ]
+  },
+  {
+    "doi": "10.1002/cpe.8303",
+    "title": "Enhancing Edge Environment Scalability: Leveraging Kubernetes for Container Orchestration and Optimization",
+    "container": "Concurrency and Computation: Practice and Experience",
+    "year": 2024,
+    "volume": "36",
+    "issue": "28",
+    "page": null,
+    "publisher": "Wiley",
+    "author": [
+      {
+        "family": "Aruna",
+        "given": "K."
+      },
+      {
+        "family": "Gurunathan",
+        "given": "Pradeep"
+      }
+    ]
+  },
+  {
+    "doi": "10.21275/sr24724151929",
+    "title": "Kubernetes for Container Orchestration in Artificial Intelligence Cloud Technologies",
+    "container": "International Journal of Science and Research (IJSR)",
+    "year": 2022,
+    "volume": "11",
+    "issue": "11",
+    "page": "1536-1538",
+    "publisher": "International Journal of Science and Research",
+    "author": [
+      {
+        "family": "Lokiny",
+        "given": "Naresh"
+      }
+    ]
+  },
+  {
+    "doi": "10.56830/ijsie202405",
+    "title": "AI-Optimized Kubernetes Scheduling: Node Affinity for Java Microservices",
+    "container": "International Journal of Sustainability and Innovation in Engineering",
+    "year": 2024,
+    "volume": "2",
+    "issue": "1",
+    "page": null,
+    "publisher": "The Science Publishing House LLC",
+    "author": [
+      {
+        "family": "Reddy Gundla",
+        "given": "Sandeep"
+      }
+    ]
+  },
+  {
+    "doi": "10.51219/jaimld/venkat-soma/247",
+    "title": "CONTAINER ORCHESTRATION WITH KUBERNETES",
+    "container": "Journal of Artificial Intelligence, Machine Learning and Data Science",
+    "year": 2024,
+    "volume": "2",
+    "issue": "3",
+    "page": "1041-1045",
+    "publisher": "United Research Forum",
+    "author": [
+      {
+        "family": "Soma",
+        "given": "Venkat"
+      }
+    ]
+  },
+  {
+    "doi": "10.1145/3643991.3645079",
+    "title": "Does Generative AI Generate Smells Related to Container Orchestration?: An Exploratory Study with Kubernetes Manifests",
+    "container": "Proceedings of the 21st International Conference on Mining Software Repositories",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "192-196",
+    "publisher": "ACM",
+    "author": [
+      {
+        "family": "Zhang",
+        "given": "Yue"
+      },
+      {
+        "family": "Meredith",
+        "given": "Rachel"
+      },
+      {
+        "family": "Reeves",
+        "given": "Wilson"
+      },
+      {
+        "family": "Coriolano",
+        "given": "J\u00falia"
+      },
+      {
+        "family": "Babar",
+        "given": "Muhammad Ali"
+      },
+      {
+        "family": "Rahman",
+        "given": "Akond"
+      }
+    ]
+  },
+  {
+    "doi": "10.55041/ijsrem35639",
+    "title": "Enhanced Visibility for Real-time Monitoring and Alerting in Kubernetes by Integrating Prometheus,Prometheus, Grafana, Loki, and Alerta",
+    "container": "INTERANTIONAL JOURNAL OF SCIENTIFIC RESEARCH IN ENGINEERING AND MANAGEMENT",
+    "year": 2024,
+    "volume": "08",
+    "issue": "06",
+    "page": "1-5",
+    "publisher": "Edtech Publishers (OPC) Private Limited",
+    "author": [
+      {
+        "family": "Department of ISE",
+        "given": ""
+      },
+      {
+        "family": "sai",
+        "given": "Karthik"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/icicr61203.2024.00011",
+    "title": "Flow-Graph Based Optimization of Containerized Resource Scheduling: An Efficient Scheduling Algorithm for Kubernetes Clusters",
+    "container": "2024 International Conference on Intelligent Computing and Robotics (ICICR)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "1-7",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Zhang",
+        "given": "Le"
+      },
+      {
+        "family": "Ji",
+        "given": "Xin"
+      },
+      {
+        "family": "Peng",
+        "given": "Fang"
+      },
+      {
+        "family": "Li",
+        "given": "Junting"
+      },
+      {
+        "family": "Chen",
+        "given": "Yiting"
+      },
+      {
+        "family": "Zhang",
+        "given": "Kui"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/globecom52923.2024.10901331",
+    "title": "Kubernetes Scheduling Design Based on Imitation Learning in Edge Cloud Scenarios",
+    "container": "GLOBECOM 2024 - 2024 IEEE Global Communications Conference",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "4618-4623",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Sang",
+        "given": "Ziyi"
+      },
+      {
+        "family": "Cai",
+        "given": "Mingjun"
+      },
+      {
+        "family": "Shen",
+        "given": "Shihao"
+      },
+      {
+        "family": "Zhang",
+        "given": "Cheng"
+      },
+      {
+        "family": "Wang",
+        "given": "Xiaofei"
+      },
+      {
+        "family": "Qiu",
+        "given": "Chao"
+      }
+    ]
+  },
+  {
+    "doi": "10.5220/0012738800003711",
+    "title": "Load-Aware Container Orchestration on Kubernetes Clusters",
+    "container": "Proceedings of the 14th International Conference on Cloud Computing and Services Science",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "92-102",
+    "publisher": "SCITEPRESS - Science and Technology Publications",
+    "author": [
+      {
+        "family": "Marchese",
+        "given": "Angelo"
+      },
+      {
+        "family": "Tomarchio",
+        "given": "Orazio"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/iros58592.2024.10802072",
+    "title": "Optimizing Kubernetes Deployment of Robotic Applications with HEFT-based Container Orchestration",
+    "container": "2024 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "4594-4599",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Lumpp",
+        "given": "Francesco"
+      },
+      {
+        "family": "Fummi",
+        "given": "Franco"
+      },
+      {
+        "family": "Bombieri",
+        "given": "Nicola"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/icumt61075.2023.10333098",
+    "title": "Container Scheduling in Kubernetes Clusters Using a Mixed Integer Linear Programming Approach",
+    "container": "2023 15th International Congress on Ultra Modern Telecommunications and Control Systems and Workshops (ICUMT)",
+    "year": 2023,
+    "volume": null,
+    "issue": null,
+    "page": "140-145",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Martins",
+        "given": "Camilla"
+      },
+      {
+        "family": "De Souza Moura",
+        "given": "Pedro Nuno"
+      },
+      {
+        "family": "De Lucena",
+        "given": "Sidney C."
+      },
+      {
+        "family": "Vieira Campos",
+        "given": "Carlos Alberto"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/ic2e59103.2023.00025",
+    "title": "Cost-Effective Scheduling for Kubernetes in the Edge-to-Cloud Continuum",
+    "container": "2023 IEEE International Conference on Cloud Engineering (IC2E)",
+    "year": 2023,
+    "volume": null,
+    "issue": null,
+    "page": "153-160",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Rac",
+        "given": "Samuel"
+      },
+      {
+        "family": "Brorsson",
+        "given": "Mats"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/cloudcom59040.2023.00032",
+    "title": "Cost-optimized scheduling for Microservices in Kubernetes",
+    "container": "2023 IEEE International Conference on Cloud Computing Technology and Science (CloudCom)",
+    "year": 2023,
+    "volume": null,
+    "issue": null,
+    "page": "131-138",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Arunan",
+        "given": "Sugunakumar"
+      },
+      {
+        "family": "Amarasinghe",
+        "given": "Gayashan"
+      },
+      {
+        "family": "Perera",
+        "given": "Indika"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/eucnc/6gsummit58263.2023.10188344",
+    "title": "DESK: Distributed Observability Framework for Edge-Based Containerized Microservices",
+    "container": "2023 Joint European Conference on Networks and Communications &amp; 6G Summit (EuCNC/6G Summit)",
+    "year": 2023,
+    "volume": null,
+    "issue": null,
+    "page": "617-622",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Usman",
+        "given": "Muhammad"
+      },
+      {
+        "family": "Ferlin",
+        "given": "Simone"
+      },
+      {
+        "family": "Brunstrom",
+        "given": "Anna"
+      },
+      {
+        "family": "Taheri",
+        "given": "Javid"
+      }
+    ]
+  },
+  {
+    "doi": "10.14445/22312803/ijctt-v71i8p109",
+    "title": "Kubernetes and Docker: An Introduction to Container Orchestration and Management",
+    "container": "International Journal of Computer Trends and Technology",
+    "year": 2023,
+    "volume": "71",
+    "issue": "8",
+    "page": "57-62",
+    "publisher": "Seventh Sense Research Group Journals",
+    "author": [
+      {
+        "family": "Sachdeva",
+        "given": "Sumit"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/inc457730.2023.10263011",
+    "title": "LSTM Based Container Scheduling In Kubernetes",
+    "container": "2023 IEEE International Conference on Contemporary Computing and Communications (InC4)",
+    "year": 2023,
+    "volume": null,
+    "issue": null,
+    "page": "1-5",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Patil",
+        "given": "Pavani"
+      },
+      {
+        "family": "Abbigeri",
+        "given": "Srishti"
+      },
+      {
+        "family": "Siddramayyanmath",
+        "given": "Vinayak"
+      },
+      {
+        "family": "Bhat",
+        "given": "Shreyas"
+      },
+      {
+        "family": "Narayan",
+        "given": "D G"
+      },
+      {
+        "family": "Patil",
+        "given": "Somashekar"
+      }
+    ]
+  },
+  {
+    "doi": "10.1007/s11227-023-05122-5",
+    "title": "Network SLO-aware container scheduling in Kubernetes",
+    "container": "The Journal of Supercomputing",
+    "year": 2023,
+    "volume": "79",
+    "issue": "10",
+    "page": "11478-11494",
+    "publisher": "Springer Science and Business Media LLC",
+    "author": [
+      {
+        "family": "Kim",
+        "given": "Eunsook"
+      },
+      {
+        "family": "Lee",
+        "given": "Kyungwoon"
+      },
+      {
+        "family": "Yoo",
+        "given": "Chuck"
+      }
+    ]
+  },
+  {
+    "doi": "10.1007/978-981-99-8979-9_12",
+    "title": "Scheduling Containerized Workflow in\u00a0Multi-cluster Kubernetes",
+    "container": "Communications in Computer and Information Science",
+    "year": 2023,
+    "volume": null,
+    "issue": null,
+    "page": "149-163",
+    "publisher": "Springer Nature Singapore",
+    "author": [
+      {
+        "family": "Liu",
+        "given": "Danyang"
+      },
+      {
+        "family": "Xia",
+        "given": "Yuanqing"
+      },
+      {
+        "family": "Shan",
+        "given": "Chenggang"
+      },
+      {
+        "family": "Wang",
+        "given": "Guan"
+      },
+      {
+        "family": "Wang",
+        "given": "Yongkang"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/access.2022.3193102",
+    "title": "A Survey on Observability of Distributed Edge &amp; Container-Based Microservices",
+    "container": "IEEE Access",
+    "year": 2022,
+    "volume": "10",
+    "issue": null,
+    "page": "86904-86919",
+    "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+    "author": [
+      {
+        "family": "Usman",
+        "given": "Muhammad"
+      },
+      {
+        "family": "Ferlin",
+        "given": "Simone"
+      },
+      {
+        "family": "Brunstrom",
+        "given": "Anna"
+      },
+      {
+        "family": "Taheri",
+        "given": "Javid"
+      }
+    ]
+  },
+  {
+    "doi": "10.5220/0011049300003200",
+    "title": "Communication Aware Scheduling of Microservices-based Applications on Kubernetes Clusters",
+    "container": "Proceedings of the 12th International Conference on Cloud Computing and Services Science",
+    "year": 2022,
+    "volume": null,
+    "issue": null,
+    "page": null,
+    "publisher": "SCITEPRESS - Science and Technology Publications",
+    "author": [
+      {
+        "family": "Marchese",
+        "given": "Angelo"
+      },
+      {
+        "family": "Tomarchio",
+        "given": "Orazio"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/icaicta56449.2022.9932961",
+    "title": "Container Migration for Distributed Deep Learning Training Scheduling in Kubernetes",
+    "container": "2022 9th International Conference on Advanced Informatics: Concepts, Theory and Applications (ICAICTA)",
+    "year": 2022,
+    "volume": null,
+    "issue": null,
+    "page": "1-6",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Viody",
+        "given": "Yonatan"
+      },
+      {
+        "family": "Kistijantoro",
+        "given": "Achmad Imam"
+      }
+    ]
+  },
+  {
+    "doi": "10.47363/jeast/2022(4)e152",
+    "title": "Harnessing Kubernetes for Container Orchestration with Review on Benefits, Challenges &amp; Best Practices",
+    "container": "Journal of Engineering and Applied Sciences Technology",
+    "year": 2022,
+    "volume": null,
+    "issue": null,
+    "page": "1-3",
+    "publisher": "Scientific Research and Community Ltd",
+    "author": [
+      {
+        "family": "Independent Researcher",
+        "given": ""
+      },
+      {
+        "family": "Sanugommula",
+        "given": "Harika"
+      }
+    ]
+  },
+  {
+    "doi": "10.3390/sym14091818",
+    "title": "Multipurpose Cloud-Based Compiler Based on Microservice Architecture and Container Orchestration",
+    "container": "Symmetry",
+    "year": 2022,
+    "volume": "14",
+    "issue": "9",
+    "page": "1818",
+    "publisher": "MDPI AG",
+    "author": [
+      {
+        "family": "Heidari",
+        "given": "Sayed"
+      },
+      {
+        "family": "Paznikov",
+        "given": "Alexey"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/jsyst.2021.3129974",
+    "title": "Speculative Container Scheduling for Deep Learning Applications in a Kubernetes Cluster",
+    "container": "IEEE Systems Journal",
+    "year": 2022,
+    "volume": "16",
+    "issue": "3",
+    "page": "3770-3781",
+    "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+    "author": [
+      {
+        "family": "Mao",
+        "given": "Ying"
+      },
+      {
+        "family": "Fu",
+        "given": "Yuqi"
+      },
+      {
+        "family": "Zheng",
+        "given": "Wenjia"
+      },
+      {
+        "family": "Cheng",
+        "given": "Long"
+      },
+      {
+        "family": "Liu",
+        "given": "Qingzhi"
+      },
+      {
+        "family": "Tao",
+        "given": "Dingwen"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/iccworkshops59551.2024.10615649",
+    "title": "Adaptive Risk-Aware Resource Orchestration for 5G Microservices over Multi-Tier Edge-Cloud Systems",
+    "container": "2024 IEEE International Conference on Communications Workshops (ICC Workshops)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "359-364",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Wu",
+        "given": "Xingqi"
+      },
+      {
+        "family": "Farooq",
+        "given": "Junaid"
+      },
+      {
+        "family": "Chen",
+        "given": "Juntao"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/bigcom65357.2024.00011",
+    "title": "Dynamic Kubernetes Scheduling: Load and Resource Optimization in Collaborative Edge Computing",
+    "container": "2024 10th International Conference on Big Data Computing and Communications (BigCom)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "9-17",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Liu",
+        "given": "Tong"
+      },
+      {
+        "family": "Zeng",
+        "given": "Fanping"
+      },
+      {
+        "family": "Xia",
+        "given": "Pengcheng"
+      }
+    ]
+  },
+  {
+    "doi": "10.1117/12.3034052",
+    "title": "Enhancing Kubernetes automated scheduling with deep learning and reinforcement techniques for large-scale cloud computing optimization",
+    "container": "Ninth International Symposium on Advances in Electrical, Electronics, and Computer Engineering (ISAEECE 2024)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "175",
+    "publisher": "SPIE",
+    "author": [
+      {
+        "family": "Xu",
+        "given": "Zheng"
+      },
+      {
+        "family": "Gong",
+        "given": "Yulu"
+      },
+      {
+        "family": "Zhou",
+        "given": "Yanlin"
+      },
+      {
+        "family": "Bao",
+        "given": "Qiaozhi"
+      },
+      {
+        "family": "Qian",
+        "given": "Wenpin"
+      }
+    ]
+  },
+  {
+    "doi": "10.51219/jaimld/yash-jani/206",
+    "title": "Unified Monitoring for Microservices: Implementing Prometheus and Grafana for Scalable Solutions",
+    "container": "Journal of Artificial Intelligence, Machine Learning and Data Science",
+    "year": 2024,
+    "volume": "2",
+    "issue": "1",
+    "page": "848-852",
+    "publisher": "United Research Forum",
+    "author": [
+      {
+        "family": "Jani",
+        "given": "Yash"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/csce60160.2023.00284",
+    "title": "A Latency-Aware Container Scheduling in Edge Cloud Computing Environment",
+    "container": "2023 Congress in Computer Science, Computer Engineering, &amp;amp; Applied Computing (CSCE)",
+    "year": 2023,
+    "volume": null,
+    "issue": null,
+    "page": "1728-1731",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Miyazawa",
+        "given": "Hajime"
+      }
+    ]
+  },
+  {
+    "doi": "10.26740/jinacs.v5n02.p138-148",
+    "title": "Analisis Perbandingan High Availibility Pada Web Server Menggunakan Orchestration Tool Kubernetes Dan Docker Swarm",
+    "container": "Journal of Informatics and Computer Science (JINACS)",
+    "year": 2023,
+    "volume": "5",
+    "issue": "02",
+    "page": "138-148",
+    "publisher": "Universitas Negeri Surabaya",
+    "author": [
+      {
+        "family": "Aldiwidianto",
+        "given": "Wahyu"
+      },
+      {
+        "family": "Prismana",
+        "given": "I Gusti Lanang Putra Eka"
+      }
+    ]
+  },
+  {
+    "doi": "10.21275/sr221229142739",
+    "title": "High Performance and Scalable Microservices Architecture using Kubernetes",
+    "container": "International Journal of Science and Research (IJSR)",
+    "year": 2023,
+    "volume": "12",
+    "issue": "1",
+    "page": "85-90",
+    "publisher": "International Journal of Science and Research",
+    "author": [
+      {
+        "family": "J Mounika K",
+        "given": "Balasirisha"
+      }
+    ]
+  },
+  {
+    "doi": "10.1117/12.2671433",
+    "title": "Preemptive resource scheduling strategy of cloud video based on Kubernetes",
+    "container": "Third International Conference on Artificial Intelligence and Computer Engineering (ICAICE 2022)",
+    "year": 2023,
+    "volume": null,
+    "issue": null,
+    "page": "199",
+    "publisher": "SPIE",
+    "author": [
+      {
+        "family": "Huo",
+        "given": "Qizheng"
+      },
+      {
+        "family": "Li",
+        "given": "Shaonan"
+      },
+      {
+        "family": "Li",
+        "given": "Chengyang"
+      },
+      {
+        "family": "Xie",
+        "given": "Yongqiang"
+      },
+      {
+        "family": "Li",
+        "given": "Zhongbo"
+      }
+    ]
+  },
+  {
+    "doi": "10.5220/0011845500003488",
+    "title": "Semi-Automated Smell Resolution in Kubernetes-Deployed Microservices",
+    "container": "Proceedings of the 13th International Conference on Cloud Computing and Services Science",
+    "year": 2023,
+    "volume": null,
+    "issue": null,
+    "page": "34-45",
+    "publisher": "SCITEPRESS - Science and Technology Publications",
+    "author": [
+      {
+        "family": "Soldani",
+        "given": "Jacopo"
+      },
+      {
+        "family": "Marin\u00f2",
+        "given": "Marco"
+      },
+      {
+        "family": "Brogi",
+        "given": "Antonio"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/icaicta56449.2022.9932943",
+    "title": "Autoscaling Based on Response Time Prediction for Microservice Application in Kubernetes",
+    "container": "2022 9th International Conference on Advanced Informatics: Concepts, Theory and Applications (ICAICTA)",
+    "year": 2022,
+    "volume": null,
+    "issue": null,
+    "page": "1-6",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Pramesti",
+        "given": "Annisa Ayu"
+      },
+      {
+        "family": "Kistijantoro",
+        "given": "Achmad Imam"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/globecom48099.2022.10001714",
+    "title": "Container Scheduling in Hybrid Cloud-Edge Collaborative System",
+    "container": "GLOBECOM 2022 - 2022 IEEE Global Communications Conference",
+    "year": 2022,
+    "volume": null,
+    "issue": null,
+    "page": "5662-5667",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Luo",
+        "given": "Jincheng"
+      },
+      {
+        "family": "Tang",
+        "given": "Bing"
+      },
+      {
+        "family": "Zhang",
+        "given": "Jiaming"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/ucc56403.2022.00019",
+    "title": "Mobile-Kube: Mobility-aware and Energy-efficient Service Orchestration on Kubernetes Edge Servers",
+    "container": "2022 IEEE/ACM 15th International Conference on Utility and Cloud Computing (UCC)",
+    "year": 2022,
+    "volume": null,
+    "issue": null,
+    "page": null,
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Ghafouri",
+        "given": "Saeid"
+      },
+      {
+        "family": "Karami",
+        "given": "Alireza"
+      },
+      {
+        "family": "Bakhtiarvan",
+        "given": "Danial Bidekani"
+      },
+      {
+        "family": "Bigdeli",
+        "given": "Aliakbar Saleh"
+      },
+      {
+        "family": "Gill",
+        "given": "Sukhpal Singh"
+      },
+      {
+        "family": "Doyle",
+        "given": "Joseph"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/ispdc55340.2022.00026",
+    "title": "Workload Deployment and Configuration Reconciliation at Scale in Kubernetes-Based Edge-Cloud Continuums",
+    "container": "2022 21st International Symposium on Parallel and Distributed Computing (ISPDC)",
+    "year": 2022,
+    "volume": null,
+    "issue": null,
+    "page": "121-128",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Hass",
+        "given": "Daniel"
+      },
+      {
+        "family": "Spillner",
+        "given": "Josef"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/iciscae62304.2024.10761792",
+    "title": "A Static Task Allocation and Scheduling Algorithm for Kubernetes Cluster",
+    "container": "2024 IEEE 7th International Conference on Information Systems and Computer Aided Education (ICISCAE)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "175-179",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Yin",
+        "given": "Jinyong"
+      },
+      {
+        "family": "Zhao",
+        "given": "Yuechang"
+      },
+      {
+        "family": "Wang",
+        "given": "Honghui"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/icoin59985.2024.10572101",
+    "title": "An Empirical Design and Implementation of Job Scheduling Enhancement for Kubernetes Clusters",
+    "container": "2024 International Conference on Information Networking (ICOIN)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "191-196",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Duong",
+        "given": "Van-Binh"
+      },
+      {
+        "family": "Phung-Ha",
+        "given": "Duong"
+      },
+      {
+        "family": "Lee",
+        "given": "Jangwon"
+      },
+      {
+        "family": "Kim",
+        "given": "Younghan"
+      }
+    ]
+  },
+  {
+    "doi": "10.1007/s11227-023-05506-7",
+    "title": "Carbon emission-aware job scheduling for Kubernetes deployments",
+    "container": "The Journal of Supercomputing",
+    "year": 2024,
+    "volume": "80",
+    "issue": "1",
+    "page": "549-569",
+    "publisher": "Springer Science and Business Media LLC",
+    "author": [
+      {
+        "family": "Piontek",
+        "given": "Tobias"
+      },
+      {
+        "family": "Haghshenas",
+        "given": "Kawsar"
+      },
+      {
+        "family": "Aiello",
+        "given": "Marco"
+      }
+    ]
+  },
+  {
+    "doi": "10.1007/978-981-97-2644-8_8",
+    "title": "Container Orchestration in\u00a0Heterogeneous Edge Computing Environments",
+    "container": "Studies in Big Data",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "151-168",
+    "publisher": "Springer Nature Singapore",
+    "author": [
+      {
+        "family": "Alqahtani",
+        "given": "Daghash K."
+      },
+      {
+        "family": "Toosi",
+        "given": "Adel N."
+      }
+    ]
+  },
+  {
+    "doi": "10.3390/pr12091804",
+    "title": "Container Scheduling Algorithms for Distributed Cloud Environments",
+    "container": "Processes",
+    "year": 2024,
+    "volume": "12",
+    "issue": "9",
+    "page": "1804",
+    "publisher": "MDPI AG",
+    "author": [
+      {
+        "family": "Chen",
+        "given": "Honghua"
+      },
+      {
+        "family": "Shen",
+        "given": "Cong"
+      },
+      {
+        "family": "Qiu",
+        "given": "Xinyuan"
+      },
+      {
+        "family": "Cheng",
+        "given": "Chuanqi"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/globecom52923.2024.10901781",
+    "title": "Context-aware Container Orchestration in Serverless Edge Computing",
+    "container": "GLOBECOM 2024 - 2024 IEEE Global Communications Conference",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "1041-1046",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Guan",
+        "given": "Peiyuan"
+      },
+      {
+        "family": "Chen",
+        "given": "Chen"
+      },
+      {
+        "family": "Chen",
+        "given": "Ziru"
+      },
+      {
+        "family": "Cai",
+        "given": "Lin X."
+      },
+      {
+        "family": "Hao",
+        "given": "Xing"
+      },
+      {
+        "family": "Taherkordi",
+        "given": "Amir"
+      }
+    ]
+  },
+  {
+    "doi": "10.5220/0012356800003636",
+    "title": "DRL4HFC: Deep Reinforcement Learning for Container-Based Scheduling in Hybrid Fog/Cloud System",
+    "container": "Proceedings of the 16th International Conference on Agents and Artificial Intelligence",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "231-242",
+    "publisher": "SCITEPRESS - Science and Technology Publications",
+    "author": [
+      {
+        "family": "Kallel",
+        "given": "Ameni"
+      },
+      {
+        "family": "Rekik",
+        "given": "Molka"
+      },
+      {
+        "family": "Khemakhem",
+        "given": "Mahdi"
+      }
+    ]
+  },
+  {
+    "doi": "10.23940/ijpe.24.03.p4.157166",
+    "title": "Efficient Resource Managing and Job Scheduling in a Heterogeneous Kubernetes Cluster for Big Data",
+    "container": "International Journal of Performability Engineering",
+    "year": 2024,
+    "volume": "20",
+    "issue": "3",
+    "page": "157",
+    "publisher": "Totem Publisher, Inc.",
+    "author": [
+      {
+        "family": "Jayanthi",
+        "given": "M"
+      },
+      {
+        "family": "K. Ram",
+        "given": "Mohan Rao"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/inc460750.2024.10649175",
+    "title": "Enhancing IoT Container Scheduling in the Cloud with Multi-Objective Accelerated PSO",
+    "container": "2024 IEEE International Conference on Contemporary Computing and Communications (InC4)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "1-6",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Sharmili",
+        "given": "Vengala Venkata Sai"
+      },
+      {
+        "family": "Gopu",
+        "given": "Arunkumar"
+      }
+    ]
+  },
+  {
+    "doi": "10.3390/electronics13132651",
+    "title": "Evolving High-Performance Computing Data Centers with Kubernetes, Performance Analysis, and Dynamic Workload Placement Based on Machine Learning Scheduling",
+    "container": "Electronics",
+    "year": 2024,
+    "volume": "13",
+    "issue": "13",
+    "page": "2651",
+    "publisher": "MDPI AG",
+    "author": [
+      {
+        "family": "Daki\u0107",
+        "given": "Vedran"
+      },
+      {
+        "family": "Kova\u010d",
+        "given": "Mario"
+      },
+      {
+        "family": "Slovinac",
+        "given": "Jurica"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/ispds62779.2024.10667482",
+    "title": "GAIPPTSC: An Efficient Container Tasks Orchestration and Scheduling Algorithm",
+    "container": "2024 5th International Conference on Information Science, Parallel and Distributed Systems (ISPDS)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "503-506",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Zheng",
+        "given": "Guofeng"
+      },
+      {
+        "family": "Jiang",
+        "given": "Bo"
+      },
+      {
+        "family": "Xie",
+        "given": "Jinhui"
+      },
+      {
+        "family": "Shi",
+        "given": "Chuxuan"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/tpds.2024.3366533",
+    "title": "GeoScale: Microservice Autoscaling With Cost Budget in Geo-Distributed Edge Clouds",
+    "container": "IEEE Transactions on Parallel and Distributed Systems",
+    "year": 2024,
+    "volume": "35",
+    "issue": "4",
+    "page": "646-662",
+    "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+    "author": [
+      {
+        "family": "Cheng",
+        "given": "Ke"
+      },
+      {
+        "family": "Zhang",
+        "given": "Sheng"
+      },
+      {
+        "family": "Liu",
+        "given": "Meizhao"
+      },
+      {
+        "family": "Gu",
+        "given": "Yingcheng"
+      },
+      {
+        "family": "Wei",
+        "given": "Liu"
+      },
+      {
+        "family": "Cheng",
+        "given": "Huanyu"
+      },
+      {
+        "family": "Liu",
+        "given": "Kai"
+      },
+      {
+        "family": "Song",
+        "given": "Yu"
+      },
+      {
+        "family": "Shi",
+        "given": "Xiaohang"
+      },
+      {
+        "family": "Zhu",
+        "given": "Andong"
+      },
+      {
+        "family": "Tang",
+        "given": "Lei"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/nmitcon62075.2024.10698999",
+    "title": "Implementing AI-Driven Resource Scheduling on OpenEuler using TensorFlow and Kubernetes",
+    "container": "2024 Second International Conference on Networks, Multimedia and Information Technology (NMITCON)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "1-6",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Li",
+        "given": "Fen"
+      },
+      {
+        "family": "Zhang",
+        "given": "Zhiqin"
+      }
+    ]
+  },
+  {
+    "doi": "10.23919/cnsm62983.2024.10814307",
+    "title": "Multi-Objective Scheduling and Resource Allocation of Kubernetes Replicas Across the Compute Continuum",
+    "container": "2024 20th International Conference on Network and Service Management (CNSM)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "1-9",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Di Cicco",
+        "given": "Nicola"
+      },
+      {
+        "family": "Poltronieri",
+        "given": "Filippo"
+      },
+      {
+        "family": "Santos",
+        "given": "Jos\u00e9"
+      },
+      {
+        "family": "Zaccarini",
+        "given": "Mattia"
+      },
+      {
+        "family": "Tortonesi",
+        "given": "Mauro"
+      },
+      {
+        "family": "Stefanelli",
+        "given": "Cesare"
+      },
+      {
+        "family": "De Turck",
+        "given": "Filip"
+      }
+    ]
+  },
+  {
+    "doi": "10.21275/sr241201012040",
+    "title": "Optimization of Kubernetes for the High-Performance Computing with Kubernetes, Performance Analysis, and Dynamic Workload Placement toward the Enhancement of Cloud Computing",
+    "container": "International Journal of Science and Research (IJSR)",
+    "year": 2024,
+    "volume": "13",
+    "issue": "12",
+    "page": "107-114",
+    "publisher": "International Journal of Science and Research",
+    "author": [
+      {
+        "family": "Chippagiri",
+        "given": "Srinivas"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/icsece61636.2024.10729560",
+    "title": "Performance Analysis of Kubernetes Job Scheduling Model Based on Queuing Theory",
+    "container": "2024 IEEE 2nd International Conference on Sensors, Electronics and Computer Engineering (ICSECE)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "592-595",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Pan",
+        "given": "Weibo"
+      },
+      {
+        "family": "Li",
+        "given": "Sheng"
+      },
+      {
+        "family": "Li",
+        "given": "Fei"
+      },
+      {
+        "family": "Zhang",
+        "given": "Jun"
+      },
+      {
+        "family": "Fang",
+        "given": "Chao"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/sec62691.2024.00032",
+    "title": "Performance Analysis of Lightweight Container Orchestration Platforms for Edge-Based IoT Applications",
+    "container": "2024 IEEE/ACM Symposium on Edge Computing (SEC)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "321-332",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Usman",
+        "given": "Muhammad"
+      },
+      {
+        "family": "Ferlin",
+        "given": "Simone"
+      },
+      {
+        "family": "Brunstrom",
+        "given": "Anna"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/icbds61829.2024.10837045",
+    "title": "Performance Evaluation of the Nature-Inspired Algorithms for Container Scheduling for Elastic Containerized Multi-Cloud",
+    "container": "2024 IEEE International Conference on Blockchain and Distributed Systems Security (ICBDS)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "1-6",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Sharma",
+        "given": "Kanika"
+      },
+      {
+        "family": "Khurana",
+        "given": "Parul"
+      }
+    ]
+  },
+  {
+    "doi": "10.1109/acoit62457.2024.10941176",
+    "title": "Performance Metrics Analysis for Container Scheduling in Cloud Environment",
+    "container": "2024 Asian Conference on Intelligent Technologies (ACOIT)",
+    "year": 2024,
+    "volume": null,
+    "issue": null,
+    "page": "1-4",
+    "publisher": "IEEE",
+    "author": [
+      {
+        "family": "Sharma",
+        "given": "Kanika"
+      },
+      {
+        "family": "Khurana",
+        "given": "Parul"
+      },
+      {
+        "family": "Kumar",
+        "given": "Mukesh"
+      }
+    ]
+  }
+]

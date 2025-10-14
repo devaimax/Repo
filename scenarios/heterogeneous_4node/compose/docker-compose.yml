@@ -1,0 +1,242 @@
+# Stack: monitoring + heterogeneous 4-node workloads
+# هذا السيناريو يعتمد على نشر الخدمات بدون قيود ثابتة، مما يسمح لاختبارات الجدولة
+# (Spread / Manual / Auto) بتحريك الحاويات بحرية فوق أربع عقد عاملة.
+version: "3.8"
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.44.0
+    configs:
+      - source: prometheus_config
+        target: /etc/prometheus/prometheus.yml
+      - source: alert_rules_config
+        target: /etc/prometheus/alert.rules.yml
+    networks:
+      - monitor-net
+    ports:
+      - "9090:9090"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+
+  grafana:
+    image: grafana/grafana:9.5.3
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=your_secure_password
+    volumes:
+      - grafana-data:/var/lib/grafana
+    networks:
+      - monitor-net
+    ports:
+      - "3000:3000"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.1
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - target: 8080
+        published: 18150
+        protocol: tcp
+        mode: host
+    networks:
+      - monitor-net
+    deploy:
+      mode: global
+
+  node-exporter:
+    image: prom/node-exporter:v1.6.0
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+    ports:
+      - target: 9100
+        published: 19100
+        protocol: tcp
+        mode: host
+    networks:
+      - monitor-net
+    deploy:
+      mode: global
+
+  # Factorial workloads (CPU-bound)
+  fact_100k:
+    image: devaimax/factorial_100k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-01
+    ports:
+      - target: 8000
+        published: 18200
+        protocol: tcp
+        mode: host
+
+  fact_200k:
+    image: devaimax/factorial_200k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-02
+    ports:
+      - target: 8000
+        published: 18210
+        protocol: tcp
+        mode: host
+
+  fact_300k:
+    image: devaimax/factorial_300k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-03
+    ports:
+      - target: 8000
+        published: 18220
+        protocol: tcp
+        mode: host
+
+  fact_400k:
+    image: devaimax/factorial_400k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-04
+    ports:
+      - target: 8000
+        published: 18230
+        protocol: tcp
+        mode: host
+
+  fact_500k:
+    image: devaimax/factorial_500k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-04
+    ports:
+      - target: 8000
+        published: 18240
+        protocol: tcp
+        mode: host
+
+  # Matrix workloads (MEM-bound)
+  matrix_4k:
+    image: devaimax/matrix_4k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-01
+    ports:
+      - target: 8000
+        published: 18260
+        protocol: tcp
+        mode: host
+
+  matrix_5k:
+    image: devaimax/matrix_5k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-02
+    ports:
+      - target: 8000
+        published: 18270
+        protocol: tcp
+        mode: host
+
+  matrix_6k:
+    image: devaimax/matrix_6k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-03
+    ports:
+      - target: 8000
+        published: 18280
+        protocol: tcp
+        mode: host
+
+  matrix_7k:
+    image: devaimax/matrix_7k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-04
+    ports:
+      - target: 8000
+        published: 18290
+        protocol: tcp
+        mode: host
+
+  matrix_8k:
+    image: devaimax/matrix_8k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-03
+    ports:
+      - target: 8000
+        published: 18300
+        protocol: tcp
+        mode: host
+
+volumes:
+  grafana-data:
+
+networks:
+  monitor-net:
+    external: true
+    name: monitor-net
+
+configs:
+  prometheus_config:
+    file: ./prometheus.yml
+  alert_rules_config:
+    file: ./alert.rules.yml

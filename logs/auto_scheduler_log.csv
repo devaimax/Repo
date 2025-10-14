@@ -1,0 +1,12 @@
+timestamp,service,node,cpu_weight,mem_weight,node_score,reason
+2025-10-14T01:14:45.851978,monitor_cadvisor,node-01 (192.168.20.5),0.80,0.20,93.80,Node 'node-01 (192.168.20.5)' selected by weighted strategy
+2025-10-14T01:14:46.057769,monitor_elasticsearch,node-01 (192.168.20.5),0.80,0.20,93.80,Node 'node-01 (192.168.20.5)' selected by weighted strategy
+2025-10-14T01:14:46.301241,monitor_fact_100k,node-01 (192.168.20.5),0.80,0.20,93.80,Node 'node-01 (192.168.20.5)' selected by weighted strategy
+2025-10-14T01:14:46.550627,monitor_fact_300k,node-01 (192.168.20.5),0.80,0.20,93.80,Node 'node-01 (192.168.20.5)' selected by weighted strategy
+2025-10-14T01:14:46.756504,monitor_fact_500k,node-02 (192.168.20.6),0.80,0.20,88.47,Node 'node-02 (192.168.20.6)' selected by weighted strategy
+2025-10-14T01:14:46.923387,monitor_grafana,node-02 (192.168.20.6),0.80,0.20,88.47,Node 'node-02 (192.168.20.6)' selected by weighted strategy
+2025-10-14T01:14:47.164712,monitor_matrix_4k,node-02 (192.168.20.6),0.80,0.20,88.47,Node 'node-02 (192.168.20.6)' selected by weighted strategy
+2025-10-14T01:14:47.349511,monitor_matrix_5k,node-02 (192.168.20.6),0.80,0.20,88.47,Node 'node-02 (192.168.20.6)' selected by weighted strategy
+2025-10-14T01:14:47.516284,monitor_node-exporter,Master (192.168.20.35),0.80,0.20,65.23,Node 'Master (192.168.20.35)' selected by weighted strategy
+2025-10-14T01:14:47.669892,monitor_prometheus,Master (192.168.20.35),0.80,0.20,65.23,Node 'Master (192.168.20.35)' selected by weighted strategy
+2025-10-14T01:14:47.843769,stress_node01,Master (192.168.20.35),0.80,0.20,65.23,Node 'Master (192.168.20.35)' selected by weighted strategy

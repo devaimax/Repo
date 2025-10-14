@@ -1,0 +1,142 @@
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+  scrape_timeout: 25s
+
+rule_files:
+  - "/etc/prometheus/alert.rules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_timeout: 10s
+    static_configs:
+      - targets: ['192.168.20.35:9090']
+        labels:
+          cluster: "swarm-lab"
+          role: "manager"
+          node: "Master"
+          service: "prometheus"
+          job_type: "monitoring"
+          ip: "192.168.20.35"
+
+  - job_name: 'cadvisor'
+    scrape_timeout: 25s
+    static_configs:
+      - targets: ['192.168.20.35:18150']
+        labels: {cluster: "swarm-lab", role: "manager", node: "Master", service: "cadvisor", ip: "192.168.20.35"}
+      - targets: ['192.168.20.5:18150']
+        labels: {cluster: "swarm-lab", role: "worker", node: "node-01", service: "cadvisor", ip: "192.168.20.5"}
+      - targets: ['192.168.20.6:18150']
+        labels: {cluster: "swarm-lab", role: "worker", node: "node-02", service: "cadvisor", ip: "192.168.20.6"}
+      - targets: ['192.168.20.7:18150']
+        labels: {cluster: "swarm-lab", role: "worker", node: "node-03", service: "cadvisor", ip: "192.168.20.7"}
+      - targets: ['192.168.20.8:18150']
+        labels: {cluster: "swarm-lab", role: "worker", node: "node-04", service: "cadvisor", ip: "192.168.20.8"}
+
+  - job_name: 'node-exporter'
+    scrape_timeout: 20s
+    static_configs:
+      - targets: ['192.168.20.35:19100']
+        labels: {cluster: "swarm-lab", role: "manager", node: "Master", service: "node-exporter", ip: "192.168.20.35"}
+      - targets: ['192.168.20.5:19100']
+        labels: {cluster: "swarm-lab", role: "worker", node: "node-01", service: "node-exporter", ip: "192.168.20.5"}
+      - targets: ['192.168.20.6:19100']
+        labels: {cluster: "swarm-lab", role: "worker", node: "node-02", service: "node-exporter", ip: "192.168.20.6"}
+      - targets: ['192.168.20.7:19100']
+        labels: {cluster: "swarm-lab", role: "worker", node: "node-03", service: "node-exporter", ip: "192.168.20.7"}
+      - targets: ['192.168.20.8:19100']
+        labels: {cluster: "swarm-lab", role: "worker", node: "node-04", service: "node-exporter", ip: "192.168.20.8"}
+
+  - job_name: 'custom_services'
+    scrape_timeout: 15s
+    static_configs:
+      - targets: ['192.168.20.5:18200']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          service: "custom"
+          task: "fact_100k"
+          service_type: "factorial"
+          node: "node-01"
+          ip: "192.168.20.5"
+      - targets: ['192.168.20.6:18210']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          service: "custom"
+          task: "fact_200k"
+          service_type: "factorial"
+          node: "node-02"
+          ip: "192.168.20.6"
+      - targets: ['192.168.20.7:18220']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          service: "custom"
+          task: "fact_300k"
+          service_type: "factorial"
+          node: "node-03"
+          ip: "192.168.20.7"
+      - targets: ['192.168.20.8:18230']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          service: "custom"
+          task: "fact_400k"
+          service_type: "factorial"
+          node: "node-04"
+          ip: "192.168.20.8"
+      - targets: ['192.168.20.8:18240']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          service: "custom"
+          task: "fact_500k"
+          service_type: "factorial"
+          node: "node-04"
+          ip: "192.168.20.8"
+      - targets: ['192.168.20.5:18260']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          service: "custom"
+          task: "matrix_4k"
+          service_type: "matrix"
+          node: "node-01"
+          ip: "192.168.20.5"
+      - targets: ['192.168.20.6:18270']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          service: "custom"
+          task: "matrix_5k"
+          service_type: "matrix"
+          node: "node-02"
+          ip: "192.168.20.6"
+      - targets: ['192.168.20.7:18280']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          service: "custom"
+          task: "matrix_6k"
+          service_type: "matrix"
+          node: "node-03"
+          ip: "192.168.20.7"
+      - targets: ['192.168.20.8:18290']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          service: "custom"
+          task: "matrix_7k"
+          service_type: "matrix"
+          node: "node-04"
+          ip: "192.168.20.8"
+      - targets: ['192.168.20.7:18300']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          service: "custom"
+          task: "matrix_8k"
+          service_type: "matrix"
+          node: "node-03"
+          ip: "192.168.20.7"

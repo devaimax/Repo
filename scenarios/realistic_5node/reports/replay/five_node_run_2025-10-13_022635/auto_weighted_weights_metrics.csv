@@ -1,0 +1,2 @@
+service_type,metric,service,weight,mean,std,samples
+factorial,factorial_execution_time_seconds,fact_200k,1.0,0.4663809254287203,0.03011988129110425,21

@@ -1,0 +1,36 @@
+strategy,service,avg_duration
+Spread (paper),factorial_500k,243.00000000000003
+Proposed (WCPU < WMEM),factorial_500k,123.31142857142858
+Proposed (WCPU > WMEM),factorial_500k,123.31142857142858
+Auto weighted (this work),factorial_500k,2.6047666079999283
+Spread (paper),factorial_300k,86.479
+Proposed (WCPU < WMEM),factorial_300k,41.767
+Proposed (WCPU > WMEM),factorial_300k,46.526
+Auto weighted (this work),factorial_300k,0.9178234017999328
+Spread (paper),factorial_100k,18.851000000000003
+Proposed (WCPU < WMEM),factorial_100k,17.822000000000003
+Proposed (WCPU > WMEM),factorial_100k,15.107
+Auto weighted (this work),factorial_100k,0.143090802800043
+Spread (paper),matrix_4k,19.429
+Proposed (WCPU < WMEM),matrix_4k,8.184999999999999
+Proposed (WCPU > WMEM),matrix_4k,8.3
+Auto weighted (this work),matrix_4k,0.936433416600039
+Spread (paper),matrix_5k,19.81
+Proposed (WCPU < WMEM),matrix_5k,10.803
+Proposed (WCPU > WMEM),matrix_5k,13.751
+Auto weighted (this work),matrix_5k,1.610236451399942
+Spread (this work),factorial_100k,0.1354917047708742
+Spread (this work),factorial_300k,0.8869569572305129
+Spread (this work),factorial_500k,2.19205859258318
+Spread (this work),matrix_4k,1.5336324569998396
+Spread (this work),matrix_5k,2.964308873333417
+Manual (this work),factorial_100k,0.1345197524299562
+Manual (this work),factorial_300k,0.8869569572305129
+Manual (this work),factorial_500k,2.2241399242352333
+Manual (this work),matrix_4k,1.5336324569998396
+Manual (this work),matrix_5k,2.976701226999978
+Auto-weighted (this work),factorial_100k,0.1345197524299562
+Auto-weighted (this work),factorial_300k,0.9166925857645551
+Auto-weighted (this work),factorial_500k,2.236354868761824
+Auto-weighted (this work),matrix_4k,1.5336324569998396
+Auto-weighted (this work),matrix_5k,2.9694879299411374

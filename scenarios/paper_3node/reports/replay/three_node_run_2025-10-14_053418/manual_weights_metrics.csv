@@ -1,0 +1,5 @@
+service_type,metric,service,weight,mean,std,samples
+factorial,factorial_execution_time_seconds,fact_100000,0.8692488371453101,0.14065315250263666,0.010677721991525134,4
+factorial,factorial_execution_time_seconds,fact_300000,0.1307511628546899,0.9350784083627249,0.05688564803013914,11
+matrix,matrix_multiplication_time_seconds,matrix_4000,0.6732842185727748,1.4958421874455072,0.09005803762047436,9
+matrix,matrix_multiplication_time_seconds,matrix_5000,0.3267157814272252,3.0825781781428043,0.27906711775315035,14
