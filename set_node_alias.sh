@@ -3,7 +3,7 @@
 # وظيفة: يولد NODE_ALIAS_MAP تلقائي من docker node inspect
 
 # عقد الـ swarm
-NODES=("Master" "node-01" "node-02")
+NODES=("Master" "node-01" "node-02" "node-03" "node-04")
 
 MAP=""
 

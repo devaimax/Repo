@@ -10,10 +10,15 @@ SERVICES=(
   "monitor_cadvisor:8080"
   "monitor_node-exporter:9100"
   "monitor_fact_100k:8000"
+  "monitor_fact_200k:8000"
   "monitor_fact_300k:8000"
+  "monitor_fact_400k:8000"
   "monitor_fact_500k:8000"
   "monitor_matrix_4k:8000"
   "monitor_matrix_5k:8000"
+  "monitor_matrix_6k:8000"
+  "monitor_matrix_7k:8000"
+  "monitor_matrix_8k:8000"
 )
 
 echo "🔍 Checking services in network: $NETWORK"
@@ -36,4 +41,3 @@ for service in "${SERVICES[@]}"; do
 
   rm -f tmp_status
 done
-

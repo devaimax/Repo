@@ -1,3 +1,6 @@
+# Stack: monitoring + heterogeneous 4-node workloads
+# هذا السيناريو يعتمد على نشر الخدمات بدون قيود ثابتة، مما يسمح لاختبارات الجدولة
+# (Spread / Manual / Auto) بتحريك الحاويات بحرية فوق أربع عقد عاملة.
 version: "3.8"
 
 services:
@@ -45,7 +48,7 @@ services:
       - /dev/disk/:/dev/disk:ro
     ports:
       - target: 8080
-        published: 18050
+        published: 18150
         protocol: tcp
         mode: host
     networks:
@@ -64,7 +67,7 @@ services:
       - '--path.sysfs=/host/sys'
     ports:
       - target: 9100
-        published: 9100
+        published: 19100
         protocol: tcp
         mode: host
     networks:
@@ -72,58 +75,85 @@ services:
     deploy:
       mode: global
 
+  # Factorial workloads (CPU-bound)
   fact_100k:
     image: devaimax/factorial_100k:latest
-    ports:
-      - target: 8000
-        published: 18000
-        protocol: tcp
-        mode: host
     networks:
       - monitor-net
     deploy:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == Master
+          - node.hostname == node-01
+    ports:
+      - target: 8000
+        published: 18200
+        protocol: tcp
+        mode: host
+
+  fact_200k:
+    image: devaimax/factorial_200k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-02
+    ports:
+      - target: 8000
+        published: 18210
+        protocol: tcp
+        mode: host
 
   fact_300k:
     image: devaimax/factorial_300k:latest
-    ports:
-      - target: 8000
-        published: 18010
-        protocol: tcp
-        mode: host
     networks:
       - monitor-net
     deploy:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == node-01
+          - node.hostname == node-03
+    ports:
+      - target: 8000
+        published: 18220
+        protocol: tcp
+        mode: host
+
+  fact_400k:
+    image: devaimax/factorial_400k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-04
+    ports:
+      - target: 8000
+        published: 18230
+        protocol: tcp
+        mode: host
 
   fact_500k:
     image: devaimax/factorial_500k:latest
-    ports:
-      - target: 8000
-        published: 18020
-        protocol: tcp
-        mode: host
     networks:
       - monitor-net
     deploy:
       replicas: 1
       placement:
         constraints:
-          - node.hostname == node-02
-
-  matrix_4k:
-    image: devaimax/matrix_4k:latest
+          - node.hostname == node-04
     ports:
       - target: 8000
-        published: 18030
+        published: 18240
         protocol: tcp
         mode: host
+
+  # Matrix workloads (MEM-bound)
+  matrix_4k:
+    image: devaimax/matrix_4k:latest
     networks:
       - monitor-net
     deploy:
@@ -131,14 +161,14 @@ services:
       placement:
         constraints:
           - node.hostname == node-01
+    ports:
+      - target: 8000
+        published: 18260
+        protocol: tcp
+        mode: host
 
   matrix_5k:
     image: devaimax/matrix_5k:latest
-    ports:
-      - target: 8000
-        published: 18040
-        protocol: tcp
-        mode: host
     networks:
       - monitor-net
     deploy:
@@ -146,28 +176,59 @@ services:
       placement:
         constraints:
           - node.hostname == node-02
+    ports:
+      - target: 8000
+        published: 18270
+        protocol: tcp
+        mode: host
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.1
-    environment:
-      - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-      - xpack.security.enabled=false
-    volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
+  matrix_6k:
+    image: devaimax/matrix_6k:latest
     networks:
       - monitor-net
-    ports:
-      - "9200:9200"
     deploy:
       replicas: 1
       placement:
         constraints:
-          - node.role == manager
+          - node.hostname == node-03
+    ports:
+      - target: 8000
+        published: 18280
+        protocol: tcp
+        mode: host
+
+  matrix_7k:
+    image: devaimax/matrix_7k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-04
+    ports:
+      - target: 8000
+        published: 18290
+        protocol: tcp
+        mode: host
+
+  matrix_8k:
+    image: devaimax/matrix_8k:latest
+    networks:
+      - monitor-net
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.hostname == node-03
+    ports:
+      - target: 8000
+        published: 18300
+        protocol: tcp
+        mode: host
 
 volumes:
   grafana-data:
-  elasticsearch-data:
 
 networks:
   monitor-net:

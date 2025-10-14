@@ -42,6 +42,61 @@ def run_command(cmd: List[str], *, env: dict[str, str] | None = None, label: str
     subprocess.run(cmd, check=True, cwd=str(ROOT), env=full_env)
 
 
+def list_services() -> List[str]:
+    """Return all Docker Swarm service names (best effort)."""
+
+    try:
+        result = subprocess.run(
+            ["docker", "service", "ls", "--format", "{{.Name}}"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+    except subprocess.CalledProcessError:
+        return []
+    return [line.strip() for line in result.stdout.splitlines() if line.strip()]
+
+
+def resolve_service_names(patterns: List[str] | None) -> List[str]:
+    """Resolve the requested service patterns to concrete service names."""
+
+    available = list_services()
+    if not available:
+        return []
+
+    if not patterns:
+        return available
+
+    resolved: set[str] = set()
+    for pattern in patterns:
+        matches = [svc for svc in available if pattern in svc]
+        if matches:
+            resolved.update(matches)
+        elif pattern in available:
+            resolved.add(pattern)
+    return sorted(resolved)
+
+
+def restart_services(services: List[str], iterations: int, interval: int) -> None:
+    """Force-restart the specified services multiple times to gather fresh samples."""
+
+    if iterations <= 0 or not services:
+        return
+
+    for cycle in range(1, iterations + 1):
+        print(f"🔁 Restart cycle {cycle}/{iterations}")
+        for service in services:
+            print(f"   ↻ docker service update --force {service}")
+            subprocess.run(
+                ["docker", "service", "update", "--force", service],
+                check=True,
+                cwd=str(ROOT),
+            )
+        if cycle < iterations:
+            print(f"   ⏳ Waiting {interval}s before next cycle…")
+            time.sleep(interval)
+
+
 def _collect_samples(prom: PrometheusConnect, metrics: List[str], minutes: int) -> pd.DataFrame:
     end = dt.datetime.now(dt.timezone.utc)
     start = end - dt.timedelta(minutes=minutes)
@@ -281,6 +336,18 @@ def parse_args() -> argparse.Namespace:
         help="Optional list of service name patterns to restrict the replay",
     )
     parser.add_argument(
+        "--restart-iterations",
+        type=int,
+        default=0,
+        help="Number of forced restarts per service before exporting metrics (default: 0)",
+    )
+    parser.add_argument(
+        "--restart-interval",
+        type=int,
+        default=70,
+        help="Delay in seconds between restart cycles when --restart-iterations > 0 (default: 70)",
+    )
+    parser.add_argument(
         "--manual-cpu-weight",
         type=float,
         default=0.7,
@@ -309,10 +376,17 @@ def main() -> int:
     output_dir: Path = args.output_dir
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    services = args.services
+    service_patterns = args.services
+    resolved_services = resolve_service_names(service_patterns)
+    if args.restart_iterations > 0:
+        if not resolved_services:
+            print("⚠️ No matching services found for restart cycles; service restarts will be skipped.")
+        else:
+            print(f"🗂️  Restart target services: {', '.join(resolved_services)}")
 
     if not args.skip_spread:
-        apply_spread(args.prom_url, services)
+        apply_spread(args.prom_url, service_patterns)
+        restart_services(resolved_services, args.restart_iterations, args.restart_interval)
         wait_for_metrics(args.settle_seconds)
         export_prometheus_csv(
             strategy="spread",
@@ -323,7 +397,8 @@ def main() -> int:
         )
 
     if not args.skip_manual:
-        apply_manual(args.prom_url, services, args.manual_cpu_weight, args.manual_mem_weight)
+        apply_manual(args.prom_url, service_patterns, args.manual_cpu_weight, args.manual_mem_weight)
+        restart_services(resolved_services, args.restart_iterations, args.restart_interval)
         wait_for_metrics(args.settle_seconds)
         export_prometheus_csv(
             strategy="manual",
@@ -335,6 +410,7 @@ def main() -> int:
 
     if not args.skip_auto:
         apply_auto(args.prom_url, args.auto_strategy)
+        restart_services(resolved_services, args.restart_iterations, args.restart_interval)
         wait_for_metrics(args.settle_seconds)
         export_prometheus_csv(
             strategy=f"auto_{args.auto_strategy}",

@@ -21,6 +21,12 @@ from pathlib import Path
 from typing import Dict, Iterable, List, Sequence
 
 from prometheus_api_client import PrometheusConnect
+import sys
+try:
+    sys.stdout.reconfigure(encoding='utf-8')  # type: ignore[attr-defined]
+except (AttributeError, ValueError):
+    pass
+
 
 if __package__ is None or __package__ == "":  # pragma: no cover - script execution
     import sys
@@ -32,22 +38,34 @@ else:  # pragma: no cover - normal package import
     from .result_exporter import export_strategy_results, DEFAULT_METRICS
     from .cache import store_json, load_json
 
+# قائمة الخدمات التي نعيد استهدافها بشكل افتراضي عند التشغيل التلقائي
 DEFAULT_SERVICE_PATTERNS = [
     "fact_100k",
+    "fact_200k",
     "fact_300k",
+    "fact_400k",
     "fact_500k",
     "matrix_4k",
     "matrix_5k",
+    "matrix_6k",
+    "matrix_7k",
+    "matrix_8k",
 ]
 
 # Factorial services are CPU bound; matrix services are memory bound. Keeping
 # these ratios inline with the paper ensures comparable behaviour out of the box.
+# الأوزان الافتراضية كما وردت في الورقة (CPU, MEM) لكل خدمة
 DEFAULT_WEIGHTS: Dict[str, tuple[float, float]] = {
     "fact_100k": (0.7, 0.3),
+    "fact_200k": (0.7, 0.3),
     "fact_300k": (0.7, 0.3),
+    "fact_400k": (0.7, 0.3),
     "fact_500k": (0.7, 0.3),
     "matrix_4k": (0.3, 0.7),
     "matrix_5k": (0.3, 0.7),
+    "matrix_6k": (0.3, 0.7),
+    "matrix_7k": (0.3, 0.7),
+    "matrix_8k": (0.3, 0.7),
 }
 
 NODE_CACHE_FILE = Path("manual_nodes.json")
@@ -55,6 +73,7 @@ NODE_CACHE_FILE = Path("manual_nodes.json")
 
 @dataclass
 class NodeMetrics:
+    # يمثل استخدام الموارد لكل عقدة يتم احتسابها في الخوارزمية
     """Container for per-node utilisation percentages."""
 
     name: str
@@ -74,6 +93,7 @@ class NodeMetrics:
 
 
 def compute_score(node: NodeMetrics, cpu_weight: float, mem_weight: float) -> float:
+    # تحويل نسب الاستهلاك إلى درجة تفضيل باستخدام الأوزان الحالية
     """Compute the weighted availability score for a node."""
 
     clamped = node.clamp()
@@ -83,6 +103,7 @@ def compute_score(node: NodeMetrics, cpu_weight: float, mem_weight: float) -> fl
 
 
 def rank_nodes(nodes: Sequence[NodeMetrics], cpu_weight: float, mem_weight: float) -> List[tuple[NodeMetrics, float]]:
+    # فرز العقد تنازليًا حسب الدرجة حتى نحدد العقد الأكثر جاهزية
     """Return nodes sorted by score descending."""
 
     scored = [(node, compute_score(node, cpu_weight, mem_weight)) for node in nodes]
@@ -90,6 +111,7 @@ def rank_nodes(nodes: Sequence[NodeMetrics], cpu_weight: float, mem_weight: floa
 
 
 def parse_nodes_csv(path: Path) -> List[NodeMetrics]:
+    # قراءة ملف CSV محلي بدل Prometheus لاستخدامه في الاختبارات أو التشغيل دون شبكة
     """Load node metrics from a CSV file."""
 
     nodes: List[NodeMetrics] = []
@@ -115,6 +137,7 @@ def parse_nodes_csv(path: Path) -> List[NodeMetrics]:
 
 
 def parse_node_arguments(raw_nodes: Iterable[str]) -> List[NodeMetrics]:
+    # دعم تمرير القيم مباشرة من سطر الأوامر بصيغة name,cpu,mem
     """Parse --node arguments formatted as name,cpu_percent,mem_percent."""
 
     parsed: List[NodeMetrics] = []
@@ -137,6 +160,7 @@ def parse_node_arguments(raw_nodes: Iterable[str]) -> List[NodeMetrics]:
 
 
 def normalise_weights(cpu_weight: float, mem_weight: float) -> tuple[float, float]:
+    # تأكيد أن مجموع الأوزان = 1 لتبسيط الحسابات
     """Normalise weights so they sum to 1 unless both are zero."""
 
     total = cpu_weight + mem_weight
@@ -162,6 +186,7 @@ def prompt_weight(label: str) -> float:
 
 
 def build_argument_parser() -> argparse.ArgumentParser:
+    # تعريف واجهة سطر الأوامر للتحكم في الخوارزمية والخيارات الإضافية
     parser = argparse.ArgumentParser(
         description="Compute node scores using the manual weighted resource optimisation algorithm.",
     )
@@ -235,6 +260,7 @@ def _env_aliases() -> Dict[str, str]:
     """Read NODE_ALIAS_MAP (ip=hostname pairs)."""
 
     mapping: Dict[str, str] = {}
+    # يسمح بربط عناوين overlay بأسماء العقد الحقيقية عند التشغيل من خارج السوارم
     alias_env = os.getenv("NODE_ALIAS_MAP")
     if not alias_env:
         return mapping
@@ -255,6 +281,7 @@ def node_alias_map() -> Dict[str, str]:
     mapping: Dict[str, str] = _env_aliases()
 
     try:
+        # نجمع بيانات إضافية من docker node inspect حتى نتعامل مع كل حالات التسمية
         node_ids_result = subprocess.run(
             ["docker", "node", "ls", "-q"],
             capture_output=True,
@@ -393,6 +420,7 @@ def load_nodes_from_prom(prom_url: str) -> List[NodeMetrics]:
 
     prom = PrometheusConnect(url=prom_url, disable_ssl=not prom_url.startswith("https"))
 
+    # استعلامات PromQL تحسب استهلاك CPU/MEM كنسبة مئوية خلال الدقيقة الماضية
     cpu_query = '100 - (avg by (instance)(rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)'
     mem_query = '(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100'
 
@@ -567,7 +595,14 @@ def hostname_constraints(service: str) -> List[str]:
         return []
     if not isinstance(data, list):
         return []
-    return [item for item in data if isinstance(item, str) and item.startswith("node.hostname==")]
+
+    constraints: List[str] = []
+    for item in data:
+        if not isinstance(item, str):
+            continue
+        if item.replace(" ", "").startswith("node.hostname=="):
+            constraints.append(item)
+    return constraints
 
 
 def apply_constraint(service: str, node: NodeMetrics, force: bool) -> None:

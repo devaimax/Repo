@@ -1,0 +1,62 @@
+version: "3.8"
+
+services:
+  prometheus:
+    network_mode: host
+    ports: []
+    networks: []
+
+  cadvisor:
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: host
+
+  node-exporter:
+    ports:
+      - target: 9100
+        published: 9100
+        protocol: tcp
+        mode: host
+
+  fact_100k:
+    ports:
+      - target: 8000
+        published: 18000
+        protocol: tcp
+        mode: host
+  fact_300k:
+    ports:
+      - target: 8000
+        published: 18010
+        protocol: tcp
+        mode: host
+  fact_500k:
+    ports:
+      - target: 8000
+        published: 18020
+        protocol: tcp
+        mode: host
+  matrix_4k:
+    ports:
+      - target: 8000
+        published: 18030
+        protocol: tcp
+        mode: host
+  matrix_5k:
+    ports:
+      - target: 8000
+        published: 18040
+        protocol: tcp
+        mode: host
+  elasticsearch:
+    ports:
+      - target: 9200
+        published: 9200
+        protocol: tcp
+        mode: host
+
+networks:
+  monitor-net:
+    external: true

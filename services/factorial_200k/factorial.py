@@ -3,6 +3,12 @@ import time
 import os
 import csv
 from prometheus_client import Gauge, start_http_server
+import sys
+try:
+    sys.stdout.reconfigure(encoding='utf-8')  # type: ignore[attr-defined]
+except (AttributeError, ValueError):
+    pass
+
 
 # تعريف المقياس لبروميثيوس
 execution_time_gauge = Gauge(

@@ -1,0 +1,35 @@
+{
+  "timestamp": "2025-10-13T20:26:31.912594+00:00",
+  "data": [
+    {
+      "name": "192.168.20.7",
+      "cpu_usage_percent": 27.066666666669335,
+      "memory_usage_percent": 21.294139937317937,
+      "hostname": "node-03"
+    },
+    {
+      "name": "192.168.20.35",
+      "cpu_usage_percent": 27.79166666666545,
+      "memory_usage_percent": 77.09498745498821,
+      "hostname": "Master"
+    },
+    {
+      "name": "192.168.20.5",
+      "cpu_usage_percent": 6.7166666666647075,
+      "memory_usage_percent": 23.856719151747065,
+      "hostname": "node-01"
+    },
+    {
+      "name": "192.168.20.8",
+      "cpu_usage_percent": 99.96666666666594,
+      "memory_usage_percent": 93.10557282868591,
+      "hostname": "node-04"
+    },
+    {
+      "name": "192.168.20.6",
+      "cpu_usage_percent": 19.04460297353205,
+      "memory_usage_percent": 20.394204439438333,
+      "hostname": "node-02"
+    }
+  ]
+}

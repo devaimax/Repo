@@ -1,0 +1,197 @@
+# Stack: enhanced host-mode deployment
+# يعتمد على host networking لقياسات أسرع ويستخدم نفس الخدمات مثل الملف الأساسي.
+version: "3.8"
+
+services:
+  # --- Monitoring overrides ---
+  prometheus:
+    # تفعيل host networking يلغي الحاجة لربط المنافذ في وضع overlay
+    network_mode: host
+    ports: []
+    networks: []
+
+  cadvisor:
+    # تقييد cadvisor على host ports الموحّدة عند اختيار الوضع المحسّن
+    ports:
+      - target: 8080
+        published: 8080
+        protocol: tcp
+        mode: host
+
+  node-exporter:
+    # تثبيت node-exporter على نفس المنافذ الاعتيادية ولكن عبر host mode
+    ports:
+      - target: 9100
+        published: 9100
+        protocol: tcp
+        mode: host
+
+  # --- Factorial workloads (CPU intensive) ---
+  fact_100k:
+    ports:
+      - target: 8000
+        published: 18000
+        protocol: tcp
+        mode: host
+    environment:
+      - SERVICE_NAME=fact_100k
+      - NODE_NAME={{.Node.Hostname}}
+      - N=100000
+    deploy:
+      update_config:
+        order: stop-first
+
+  fact_300k:
+    ports:
+      - target: 8000
+        published: 18010
+        protocol: tcp
+        mode: host
+    environment:
+      - SERVICE_NAME=fact_300k
+      - NODE_NAME={{.Node.Hostname}}
+      - N=300000
+    deploy:
+      update_config:
+        order: stop-first
+
+  fact_500k:
+    ports:
+      - target: 8000
+        published: 18020
+        protocol: tcp
+        mode: host
+    environment:
+      - SERVICE_NAME=fact_500k
+      - NODE_NAME={{.Node.Hostname}}
+      - N=500000
+    deploy:
+      update_config:
+        order: stop-first
+
+  fact_200k:
+    ports:
+      - target: 8000
+        published: 18060
+        protocol: tcp
+        mode: host
+    environment:
+      - SERVICE_NAME=fact_200k
+      - NODE_NAME={{.Node.Hostname}}
+      - N=200000
+    deploy:
+      update_config:
+        order: stop-first
+
+  fact_400k:
+    ports:
+      - target: 8000
+        published: 18070
+        protocol: tcp
+        mode: host
+    environment:
+      - SERVICE_NAME=fact_400k
+      - NODE_NAME={{.Node.Hostname}}
+      - N=400000
+    deploy:
+      update_config:
+        order: stop-first
+
+  # --- Matrix workloads (MEM intensive) ---
+  matrix_4k:
+    ports:
+      - target: 8000
+        published: 18030
+        protocol: tcp
+        mode: host
+    environment:
+      - SERVICE_NAME=matrix_4k
+      - NODE_NAME={{.Node.Hostname}}
+      - MATRIX_SIZE=4000
+    deploy:
+      update_config:
+        order: stop-first
+
+  matrix_5k:
+    ports:
+      - target: 8000
+        published: 18040
+        protocol: tcp
+        mode: host
+    environment:
+      - SERVICE_NAME=matrix_5k
+      - NODE_NAME={{.Node.Hostname}}
+      - MATRIX_SIZE=5000
+    deploy:
+      update_config:
+        order: stop-first
+
+  matrix_6k:
+    ports:
+      - target: 8000
+        published: 18080
+        protocol: tcp
+        mode: host
+    environment:
+      - SERVICE_NAME=matrix_6k
+      - NODE_NAME={{.Node.Hostname}}
+      - MATRIX_SIZE=6000
+    deploy:
+      update_config:
+        order: stop-first
+
+  matrix_7k:
+    ports:
+      - target: 8000
+        published: 18090
+        protocol: tcp
+        mode: host
+    environment:
+      - SERVICE_NAME=matrix_7k
+      - NODE_NAME={{.Node.Hostname}}
+      - MATRIX_SIZE=7000
+    deploy:
+      update_config:
+        order: stop-first
+
+  matrix_8k:
+    ports:
+      - target: 8000
+        published: 18100
+        protocol: tcp
+        mode: host
+    environment:
+      - SERVICE_NAME=matrix_8k
+      - NODE_NAME={{.Node.Hostname}}
+      - MATRIX_SIZE=8000
+    deploy:
+      update_config:
+        order: stop-first
+
+  elasticsearch:
+    # تشغيل Elasticsearch على الـ manager مع host networking
+    ports:
+      - target: 9200
+        published: 9200
+        protocol: tcp
+        mode: host
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    deploy:
+      update_config:
+        order: stop-first
+      placement:
+        constraints:
+          - node.hostname == Master
+
+# --- overlay reference retained للتماشي مع أوامر النشر ---
+networks:
+  monitor-net:
+    external: true
+
+# --- Prometheus config يستخدم النسخة المحسّنة ---
+configs:
+  prometheus_config:
+    file: ./prometheus.enhanced.yml

@@ -1,19 +1,19 @@
 global:
   scrape_interval: 30s
   evaluation_interval: 30s
-  scrape_timeout: 25s  # Default timeout, must be less than scrape_interval
+  scrape_timeout: 25s
 
 rule_files:
   - "/etc/prometheus/alert.rules.yml"
 
 scrape_configs:
   - job_name: 'prometheus'
-    scrape_timeout: 10s  # Prometheus metrics are fast
+    scrape_timeout: 10s
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: ['192.168.20.35:9090']
 
   - job_name: 'cadvisor'
-    scrape_timeout: 25s  # Increased timeout for cAdvisor (can be slow)
+    scrape_timeout: 25s
     scrape_interval: 30s
     static_configs:
       - targets: ['192.168.20.35:18050']
@@ -27,7 +27,7 @@ scrape_configs:
           node: 'node-02'
 
   - job_name: 'node-exporter'
-    scrape_timeout: 20s  # Node exporter is usually fast
+    scrape_timeout: 20s
     scrape_interval: 30s
     static_configs:
       - targets: ['192.168.20.35:9100']
@@ -41,21 +41,21 @@ scrape_configs:
           node: 'node-02'
 
   - job_name: 'custom_services'
-    scrape_timeout: 15s  # Custom services should respond quickly
+    scrape_timeout: 15s
     scrape_interval: 30s
     static_configs:
-      - targets: ['192.168.20.35:18000']
+      - targets: ['192.168.20.5:18000']
         labels:
           service: 'fact_100k'
-          node: 'Master'
-      - targets: ['192.168.20.5:18010']
+          node: 'node-01'
+      - targets: ['192.168.20.6:18010']
         labels:
           service: 'fact_300k'
-          node: 'node-01'
-      - targets: ['192.168.20.6:18020']
+          node: 'node-02'
+      - targets: ['192.168.20.35:18020']
         labels:
           service: 'fact_500k'
-          node: 'node-02'
+          node: 'Master'
       - targets: ['192.168.20.5:18030']
         labels:
           service: 'matrix_4k'

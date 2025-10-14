@@ -1,0 +1,98 @@
+global:
+  scrape_interval: 30s
+  evaluation_interval: 30s
+  scrape_timeout: 25s  # Default timeout, must be less than scrape_interval
+
+rule_files:
+  - "/etc/prometheus/alert.rules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    scrape_timeout: 10s  # Prometheus metrics are fast
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'cadvisor'
+    scrape_timeout: 25s  # Increased timeout for cAdvisor (can be slow)
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['192.168.20.35:18050']
+        labels:
+          node: 'Master'
+      - targets: ['192.168.20.5:18050']
+        labels:
+          node: 'node-01'
+      - targets: ['192.168.20.6:18050']
+        labels:
+          node: 'node-02'
+      - targets: ['192.168.20.7:18050']
+        labels:
+          node: 'node-03'
+      - targets: ['192.168.20.8:18050']
+        labels:
+          node: 'node-04'
+
+  - job_name: 'node-exporter'
+    scrape_timeout: 20s  # Node exporter is usually fast
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['192.168.20.35:9100']
+        labels:
+          node: 'Master'
+      - targets: ['192.168.20.5:9100']
+        labels:
+          node: 'node-01'
+      - targets: ['192.168.20.6:9100']
+        labels:
+          node: 'node-02'
+      - targets: ['192.168.20.7:9100']
+        labels:
+          node: 'node-03'
+      - targets: ['192.168.20.8:9100']
+        labels:
+          node: 'node-04'
+
+  - job_name: 'custom_services'
+    scrape_timeout: 15s  # Custom services should respond quickly
+    scrape_interval: 30s
+    static_configs:
+      - targets: ['192.168.20.5:18000']
+        labels:
+          service: 'fact_100k'
+          node: 'node-01'
+      - targets: ['192.168.20.6:18010']
+        labels:
+          service: 'fact_300k'
+          node: 'node-02'
+      - targets: ['192.168.20.8:18020']
+        labels:
+          service: 'fact_500k'
+          node: 'node-04'
+      - targets: ['192.168.20.7:18060']
+        labels:
+          service: 'fact_200k'
+          node: 'node-03'
+      - targets: ['192.168.20.8:18070']
+        labels:
+          service: 'fact_400k'
+          node: 'node-04'
+      - targets: ['192.168.20.5:18030']
+        labels:
+          service: 'matrix_4k'
+          node: 'node-01'
+      - targets: ['192.168.20.6:18040']
+        labels:
+          service: 'matrix_5k'
+          node: 'node-02'
+      - targets: ['192.168.20.7:18080']
+        labels:
+          service: 'matrix_6k'
+          node: 'node-03'
+      - targets: ['192.168.20.8:18090']
+        labels:
+          service: 'matrix_7k'
+          node: 'node-04'
+      - targets: ['192.168.20.7:18100']
+        labels:
+          service: 'matrix_8k'
+          node: 'node-03'

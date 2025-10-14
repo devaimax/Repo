@@ -4,6 +4,12 @@ from typing import List
 
 import pandas as pd
 from prometheus_api_client import PrometheusConnect
+import sys
+try:
+    sys.stdout.reconfigure(encoding='utf-8')  # type: ignore[attr-defined]
+except (AttributeError, ValueError):
+    pass
+
 
 
 def collect_samples(prom: PrometheusConnect, metrics: List[str], minutes: int) -> pd.DataFrame:

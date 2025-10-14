@@ -1,6 +1,12 @@
 import requests
 import pandas as pd
 from datetime import datetime
+import sys
+try:
+    sys.stdout.reconfigure(encoding='utf-8')  # type: ignore[attr-defined]
+except (AttributeError, ValueError):
+    pass
+
 
 PROMETHEUS_URL = "http://localhost:9090"
 

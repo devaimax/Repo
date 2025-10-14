@@ -20,10 +20,24 @@ def init_logs(csv_path: Path, db_path: Path) -> None:
     """Ensure CSV/SQLite destinations exist with the expected schema."""
 
     csv_path.parent.mkdir(parents=True, exist_ok=True)
-    if not csv_path.exists():
+    rows_to_preserve = []
+    needs_header = True
+    if csv_path.exists():
+        try:
+            with csv_path.open("r", newline="", encoding="utf-8") as handle:
+                rows = list(csv.reader(handle))
+        except (csv.Error, UnicodeDecodeError):
+            rows = []
+        if rows and list(rows[0]) == list(LOG_HEADERS):
+            needs_header = False
+        else:
+            rows_to_preserve = rows
+    if needs_header:
         with csv_path.open("w", newline="", encoding="utf-8") as handle:
             writer = csv.writer(handle)
             writer.writerow(LOG_HEADERS)
+            for row in rows_to_preserve:
+                writer.writerow(row)
 
     db_path.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(db_path)

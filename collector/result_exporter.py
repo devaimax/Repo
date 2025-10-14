@@ -302,6 +302,11 @@ def export_strategy_results(
     else:
         store_json(df.to_dict(orient="records"), SAMPLES_CACHE_FILE)
 
+    # Excel engines expect timezone-naive timestamps; keep UTC values but drop tz info.
+    for ts_col in ("completed_at", "started_at"):
+        if ts_col in df.columns and pd.api.types.is_datetime64tz_dtype(df[ts_col]):
+            df[ts_col] = df[ts_col].dt.tz_convert(None)
+
     df.insert(0, "strategy", method)
 
     destination = out_path or Path("reports") / f"{method}_results.xlsx"

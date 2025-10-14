@@ -20,10 +20,14 @@ from pathlib import Path
 from typing import Dict, List, Sequence
 
 from prometheus_api_client import PrometheusConnect
+import sys
+try:
+    sys.stdout.reconfigure(encoding='utf-8')  # type: ignore[attr-defined]
+except (AttributeError, ValueError):
+    pass
+
 
 if __package__ is None or __package__ == "":  # pragma: no cover - script invocation fallback
-    import sys
-
     sys.path.append(str(Path(__file__).resolve().parent.parent))
     from collector.log_utils import append_log, init_logs  # type: ignore
     from collector.notifier import notify  # type: ignore
@@ -60,16 +64,128 @@ else:  # pragma: no cover - normal package imports
 # =====================================================================
 # Configuration
 # =====================================================================
+# رابط Prometheus المستخدم لجلب القياسات أثناء التشغيل الآلي
 PROM_URL = os.getenv("PROM_URL", "http://localhost:9090")
+# عند تعيين INTERVAL>0 تتحول الأداة لخدمة دورية
 INTERVAL = int(os.getenv("SCHEDULER_INTERVAL", "0"))
+# اختيار الاستراتيجية يؤثر على توزيع الخدمات بعد حساب الأوزان
 STRATEGY = os.getenv("SCHEDULER_STRATEGY", "weighted")  # weighted | round_robin | least_loaded
 SIMULATION = int(os.getenv("SIMULATION_MODE", "0"))
+# عند تفعيل AUTO_FORCE_REDEPLOY نعيد نشر الخدمة بعد تحديث القيود لضمان حاويات جديدة
+FORCE_REDEPLOY = os.getenv("AUTO_FORCE_REDEPLOY", "").strip().lower() in {"1", "true", "yes", "on"}
 
-CSV_FILE = Path(os.getenv("LOG_FILE_PATH", "logs/auto_scheduler_log.csv"))
-DB_FILE = Path(os.getenv("DB_FILE_PATH", "logs/auto_scheduler.db"))
-REPORT_DIR = Path("reports")
-PLOT_DIR = REPORT_DIR / "plots"
+FALLBACK_BASE = Path.home() / ".docker-swarm-project"
+FALLBACK_ARTIFACT_ROOT = FALLBACK_BASE / "logs"
 
+
+def _ensure_writable_path(candidate: Path, fallback_name: str, purpose: str) -> Path:
+    """Make sure we can write to the desired path; fall back to user space if needed."""
+
+    candidate = candidate.expanduser()
+    try:
+        candidate.parent.mkdir(parents=True, exist_ok=True)
+        if candidate.exists():
+            with candidate.open("a"):
+                pass
+        else:
+            with candidate.open("x"):
+                pass
+            candidate.unlink(missing_ok=True)
+        return candidate
+    except (OSError, PermissionError) as exc:
+        fallback_path = (FALLBACK_ARTIFACT_ROOT / fallback_name).expanduser()
+        try:
+            candidate_resolved = candidate.resolve()
+            fallback_resolved = fallback_path.resolve()
+        except OSError:
+            candidate_resolved = candidate.absolute()
+            fallback_resolved = fallback_path.absolute()
+        if candidate_resolved == fallback_resolved:
+            raise RuntimeError(
+                f"{purpose.capitalize()} destination {candidate} is not writable and no fallback is available."
+            ) from exc
+
+        print(
+            f"⚠️ {purpose.capitalize()} destination {candidate} not writable ({exc}); "
+            f"using {fallback_path}"
+        )
+        try:
+            fallback_path.parent.mkdir(parents=True, exist_ok=True)
+            if fallback_path.exists():
+                with fallback_path.open("a"):
+                    pass
+            else:
+                with fallback_path.open("x"):
+                    pass
+                fallback_path.unlink(missing_ok=True)
+        except (OSError, PermissionError) as fallback_exc:
+            raise RuntimeError(
+                f"Unable to prepare fallback path {fallback_path} for {purpose}. "
+                "Adjust permissions or set LOG_FILE_PATH/DB_FILE_PATH."
+            ) from fallback_exc
+        return fallback_path
+
+
+def _ensure_writable_dir(candidate: Path, fallback_subdir: str, purpose: str) -> Path:
+    """Verify we can create files inside a directory, otherwise redirect to user space."""
+
+    candidate = candidate.expanduser()
+    try:
+        candidate.mkdir(parents=True, exist_ok=True)
+        probe = candidate / ".write_probe"
+        with probe.open("w"):
+            pass
+        probe.unlink(missing_ok=True)
+        return candidate
+    except (OSError, PermissionError) as exc:
+        fallback_path = (FALLBACK_BASE / fallback_subdir).expanduser()
+        try:
+            candidate_resolved = candidate.resolve()
+            fallback_resolved = fallback_path.resolve()
+        except OSError:
+            candidate_resolved = candidate.absolute()
+            fallback_resolved = fallback_path.absolute()
+        if candidate_resolved == fallback_resolved:
+            raise RuntimeError(
+                f"{purpose.capitalize()} directory {candidate} is not writable and no fallback is available."
+            ) from exc
+        print(
+            f"⚠️ {purpose.capitalize()} directory {candidate} not writable ({exc}); "
+            f"using {fallback_path}"
+        )
+        try:
+            fallback_path.mkdir(parents=True, exist_ok=True)
+            probe = fallback_path / ".write_probe"
+            with probe.open("w"):
+                pass
+            probe.unlink(missing_ok=True)
+        except (OSError, PermissionError) as fallback_exc:
+            raise RuntimeError(
+                f"Unable to prepare fallback directory {fallback_path} for {purpose}. "
+                "Adjust permissions or set REPORT_DIR."
+            ) from fallback_exc
+        return fallback_path
+
+
+DEFAULT_LOG_PATH = Path("logs/auto_scheduler_log.csv")
+DEFAULT_DB_PATH = Path("logs/auto_scheduler.db")
+
+CSV_FILE = _ensure_writable_path(
+    Path(os.getenv("LOG_FILE_PATH", str(DEFAULT_LOG_PATH))),
+    fallback_name="auto_scheduler_log.csv",
+    purpose="log",
+)
+DB_FILE = _ensure_writable_path(
+    Path(os.getenv("DB_FILE_PATH", str(DEFAULT_DB_PATH))),
+    fallback_name="auto_scheduler.db",
+    purpose="database",
+)
+
+REPORT_ROOT = Path(os.getenv("REPORT_DIR", "reports"))
+REPORT_DIR = _ensure_writable_dir(REPORT_ROOT, "reports", "report output")
+PLOT_DIR = _ensure_writable_dir(REPORT_DIR / "plots", "reports/plots", "plot output")
+
+# نخزن آخر لقطة لقياسات العقد لاستعمالها عند انقطاع Prometheus
 NODE_CACHE_FILE = Path("auto_nodes.json")
 
 SLACK_WEBHOOK = os.getenv("SLACK_WEBHOOK")
@@ -84,17 +200,13 @@ EXPORT_EXCEL_METRICS = tuple(
     for metric in os.getenv("EXPORT_EXCEL_METRICS", "").split(",")
     if metric.strip()
 ) or DEFAULT_METRICS
-
-
-# =====================================================================
-# Prometheus helpers
-# =====================================================================
 def load_node_host_map() -> Dict[str, str]:
     """Return a mapping of node identifiers (IP/ID) to hostnames."""
 
     mapping: Dict[str, str] = {}
 
     try:
+        # نعتمد على docker node ls/inspect لبناء جدول تحويل شامل
         node_ids_result = subprocess.run(
             ["docker", "node", "ls", "-q"],
             capture_output=True,
@@ -204,6 +316,7 @@ def fetch_node_metrics(prom_url: str) -> List[NodeMetrics]:
 
     prom = PrometheusConnect(url=prom_url, disable_ssl=not prom_url.startswith("https"))
 
+    # استعلامات PromQL تحوّل معلومات node_exporter إلى نسب استعمال
     cpu_query = '100 - (avg by (instance)(rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100)'
     mem_query = '(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100'
 
@@ -212,6 +325,7 @@ def fetch_node_metrics(prom_url: str) -> List[NodeMetrics]:
 
     node_info_map: Dict[str, str] = {}
     try:
+        # نحاول إضافة أسماء العقد من node_uname_info كمرجع إضافي
         node_info_data = prom.custom_query("node_uname_info")
         for item in node_info_data:
             labels = item.get("metric", {})
@@ -249,6 +363,7 @@ def list_services() -> List[str]:
     """Return Swarm service names (best-effort)."""
 
     try:
+        # نعتمد على docker service ls للحصول على قائمة الخدمات الحالية
         result = subprocess.run(
             ["docker", "service", "ls", "--format", "{{.Name}}"],
             capture_output=True,
@@ -266,6 +381,7 @@ def format_node_label(node: NodeMetrics) -> str:
     """Return a human-friendly label showing hostname and IP."""
 
     if node.hostname and node.hostname != node.name:
+        # نعرض label "hostname (ip)" لتسهيل قراءة السجلات
         return f"{node.hostname} ({node.name})"
     return node.name
 
@@ -305,6 +421,7 @@ def hostname_constraints(service: str) -> List[str]:
 def deploy_service(service: str, node: NodeMetrics, reason: str, cpu_weight: float, mem_weight: float, score: float) -> None:
     """Apply node constraints to a Swarm service and log the decision."""
 
+    # نحدّث قيود الخدمة ثم نسجل السبب بهدف التتبع/التقرير
     label = format_node_label(node)
     constraint_target = node.hostname or node.name
 
@@ -355,6 +472,19 @@ def deploy_service(service: str, node: NodeMetrics, reason: str, cpu_weight: flo
                 ],
                 check=True,
             )
+            if FORCE_REDEPLOY:
+                subprocess.run(
+                    [
+                        "docker",
+                        "service",
+                        "update",
+                        "--detach=true",
+                        "--force",
+                        service,
+                    ],
+                    check=True,
+                )
+                print("   ↳ Forced redeploy triggered (AUTO_FORCE_REDEPLOY enabled)")
             print(f"✅ Service '{service}' running on '{label}'")
         except subprocess.CalledProcessError as exc:
             print(f"❌ Failed to deploy {service}: {exc}")
@@ -368,6 +498,7 @@ def deploy_service(service: str, node: NodeMetrics, reason: str, cpu_weight: flo
 # Orchestration
 # =====================================================================
 def run_once() -> None:
+    # تنفيذ دورة جدولة واحدة تتضمن الجلب، الحساب، التوزيع، 
     try:
         nodes = fetch_node_metrics(PROM_URL)
     except Exception as exc:  # noqa: BLE001 - Prometheus/network failures vary
@@ -412,6 +543,7 @@ def run_once() -> None:
     else:
         assignments = distribute_weighted(services, ranked)
 
+    # طباعة القرار النهائي قبل التنفيذ يساعد في مراجعة النتائج الحية
     print("\n📦 Service Distribution:")
     for service, node in assignments:
         score = compute_score(node, cpu_weight, mem_weight)
@@ -420,8 +552,8 @@ def run_once() -> None:
         print(f"  - {service} → {label} ({reason}, score={score:.2f})")
         deploy_service(service, node, reason, cpu_weight, mem_weight, score)
 
-    generate_plots(CSV_FILE, PLOT_DIR)
-    generate_pdf(REPORT_DIR, PLOT_DIR)
+    plot_outputs = generate_plots(CSV_FILE, PLOT_DIR)
+    generate_pdf(REPORT_DIR, PLOT_DIR, plot_outputs)
     notify(
         message=(
             f"Scheduler run completed with strategy={STRATEGY}, "
@@ -433,7 +565,12 @@ def run_once() -> None:
     )
 
     if EXPORT_EXCEL:
-        destination = Path(EXPORT_EXCEL_OUT) if EXPORT_EXCEL_OUT else Path("reports") / "auto_results.xlsx"
+        destination = (
+            Path(EXPORT_EXCEL_OUT).expanduser()
+            if EXPORT_EXCEL_OUT
+            else REPORT_DIR / "auto_results.xlsx"
+        )
+        destination.parent.mkdir(parents=True, exist_ok=True)
         export_strategy_results(
             method="auto",
             prom_url=PROM_URL,
@@ -447,6 +584,7 @@ def run_once() -> None:
 # Main entrypoint
 # =====================================================================
 def main(argv: Sequence[str] | None = None) -> int:  # noqa: ARG001 - argparse not used yet
+    # تهيئة ملفات السجل ثم تشغيل الدورة الواحدة أو الحلقات المتكررة
     init_logs(CSV_FILE, DB_FILE)
 
     if INTERVAL > 0:

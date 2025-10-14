@@ -12,6 +12,12 @@ import subprocess
 from pathlib import Path
 from typing import List
 import json
+import sys
+try:
+    sys.stdout.reconfigure(encoding='utf-8')  # type: ignore[attr-defined]
+except (AttributeError, ValueError):
+    pass
+
 
 if __package__ is None or __package__ == "":  # pragma: no cover - script execution
     import sys
@@ -21,17 +27,24 @@ if __package__ is None or __package__ == "":  # pragma: no cover - script execut
 else:  # pragma: no cover - normal package import
     from .result_exporter import export_strategy_results, DEFAULT_METRICS
 
+# الأنماط الافتراضية للخدمات التي نزيل قيودها عند إنشاء baseline
 DEFAULT_PATTERNS = [
     "fact_100k",
+    "fact_200k",
     "fact_300k",
+    "fact_400k",
     "fact_500k",
     "matrix_4k",
     "matrix_5k",
+    "matrix_6k",
+    "matrix_7k",
+    "matrix_8k",
 ]
 
 
 def list_services() -> List[str]:
     try:
+        # الحصول على قائمة الخدمات الحالية من السوارم
         result = subprocess.run(
             ["docker", "service", "ls", "--format", "{{.Name}}"],
             capture_output=True,
@@ -44,6 +57,7 @@ def list_services() -> List[str]:
 
 
 def resolve_services(patterns: List[str] | None) -> List[str]:
+    # مطابقة الأنماط مع أسماء الخدمات الفعلية لتبسيط التشغيل
     available = list_services()
     if not available:
         return []
@@ -74,6 +88,7 @@ def known_hostnames() -> List[str]:
 
 def hostname_constraints(service: str) -> List[str]:
     try:
+        # قراءة قيود node.hostname الحالية حتى نستطيع حذفها
         result = subprocess.run(
             [
                 "docker",
@@ -104,24 +119,27 @@ def hostname_constraints(service: str) -> List[str]:
 
 
 def clear_constraints(service: str, hosts: List[str]) -> None:
-    for host in hosts:
+    # إزالة كل قيود node.hostname المرتبطة بالخدمة المحددة دون الانتظار لكل تحديث
+    existing = hostname_constraints(service)
+
+    removals: set[str] = set(existing)
+    if existing:
+        normalized = {constraint.replace(" ", "") for constraint in existing}
+        for host in hosts:
+            candidate = f"node.hostname=={host}"
+            if candidate not in normalized:
+                removals.add(candidate)
+    else:
+        # في حال فشل inspect نزيل كل الأسماء المحتملة كخيار أخير
+        removals.update(f"node.hostname=={host}" for host in hosts)
+
+    for constraint in sorted(removals):
         subprocess.run(
             [
                 "docker",
                 "service",
                 "update",
-                "--constraint-rm",
-                f"node.hostname=={host}",
-                service,
-            ],
-            check=False,
-        )
-    for constraint in hostname_constraints(service):
-        subprocess.run(
-            [
-                "docker",
-                "service",
-                "update",
+                "--detach=true",
                 "--constraint-rm",
                 constraint,
                 service,
@@ -131,6 +149,7 @@ def clear_constraints(service: str, hosts: List[str]) -> None:
 
 
 def describe_distribution(service: str) -> None:
+    # طباعة التوزيع الحالي بعد إعادة الضبط لتوثيق النتيجة
     try:
         result = subprocess.run(
             [
@@ -154,6 +173,7 @@ def describe_distribution(service: str) -> None:
 
 
 def main() -> int:
+    # إعداد CLI للسماح بإعادة الضبط وتصدير القياسات الاختيارية
     parser = argparse.ArgumentParser(description="Reset services to the Spread baseline")
     parser.add_argument("--services", nargs="+", default=None, help="Service name patterns to reset")
     parser.add_argument(

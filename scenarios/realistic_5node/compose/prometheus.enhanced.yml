@@ -23,27 +23,41 @@ scrape_configs:
     scrape_timeout: 25s  # Increased timeout for cAdvisor (can be slow)
     scrape_interval: 30s
     static_configs:
-      - targets: ['192.168.20.35:8080']
+      - targets: ['192.168.20.35:18050']
         labels:
           cluster: "swarm-lab"
           role: "manager"
           node: "Master"
           service: "cadvisor"
           ip: "192.168.20.35"
-      - targets: ['192.168.20.5:8080']
+      - targets: ['192.168.20.5:18050']
         labels:
           cluster: "swarm-lab"
           role: "worker"
-          node: "node-0a"
+          node: "node-01"
           service: "cadvisor"
           ip: "192.168.20.5"
-      - targets: ['192.168.20.6:8080']
+      - targets: ['192.168.20.6:18050']
         labels:
           cluster: "swarm-lab"
           role: "worker"
-          node: "node-0b"
+          node: "node-02"
           service: "cadvisor"
           ip: "192.168.20.6"
+      - targets: ['192.168.20.7:18050']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-03"
+          service: "cadvisor"
+          ip: "192.168.20.7"
+      - targets: ['192.168.20.8:18050']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-04"
+          service: "cadvisor"
+          ip: "192.168.20.8"
 
   - job_name: 'node-exporter'
     scrape_timeout: 20s  # Node exporter is usually fast
@@ -60,53 +74,85 @@ scrape_configs:
         labels:
           cluster: "swarm-lab"
           role: "worker"
-          node: "node-0a"
+          node: "node-01"
           service: "node-exporter"
           ip: "192.168.20.5"
       - targets: ['192.168.20.6:9100']
         labels:
           cluster: "swarm-lab"
           role: "worker"
-          node: "node-0b"
+          node: "node-02"
           service: "node-exporter"
           ip: "192.168.20.6"
+      - targets: ['192.168.20.7:9100']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-03"
+          service: "node-exporter"
+          ip: "192.168.20.7"
+      - targets: ['192.168.20.8:9100']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-04"
+          service: "node-exporter"
+          ip: "192.168.20.8"
 
   - job_name: 'custom_services'
     scrape_timeout: 15s  # Custom services should respond quickly
     scrape_interval: 30s
     static_configs:
-      - targets: ['192.168.20.35:18000']
+      - targets: ['192.168.20.5:18000']
         labels:
           cluster: "swarm-lab"
-          role: "manager"
-          node: "Master"
+          role: "worker"
+          node: "node-01"
           service: "custom"
           task: "fact_100k"
-          ip: "192.168.20.35"
-          purpose: "benchmark"
-      - targets: ['192.168.20.5:18010']
-        labels:
-          cluster: "swarm-lab"
-          role: "worker"
-          node: "node-0a"
-          service: "custom"
-          task: "fact_300k"
           ip: "192.168.20.5"
           purpose: "benchmark"
-      - targets: ['192.168.20.6:18020']
+      - targets: ['192.168.20.6:18010']
         labels:
           cluster: "swarm-lab"
           role: "worker"
-          node: "node-0b"
+          node: "node-02"
+          service: "custom"
+          task: "fact_300k"
+          ip: "192.168.20.6"
+          purpose: "benchmark"
+      - targets: ['192.168.20.8:18020']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-04"
           service: "custom"
           task: "fact_500k"
-          ip: "192.168.20.6"
+          ip: "192.168.20.8"
+          purpose: "benchmark"
+      - targets: ['192.168.20.7:18060']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-03"
+          service: "custom"
+          task: "fact_200k"
+          ip: "192.168.20.7"
+          purpose: "benchmark"
+      - targets: ['192.168.20.8:18070']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-04"
+          service: "custom"
+          task: "fact_400k"
+          ip: "192.168.20.8"
           purpose: "benchmark"
       - targets: ['192.168.20.5:18030']
         labels:
           cluster: "swarm-lab"
           role: "worker"
-          node: "node-0a"
+          node: "node-01"
           service: "custom"
           task: "matrix_4k"
           ip: "192.168.20.5"
@@ -115,8 +161,35 @@ scrape_configs:
         labels:
           cluster: "swarm-lab"
           role: "worker"
-          node: "node-0b"
+          node: "node-02"
           service: "custom"
           task: "matrix_5k"
           ip: "192.168.20.6"
+          purpose: "benchmark"
+      - targets: ['192.168.20.7:18080']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-03"
+          service: "custom"
+          task: "matrix_6k"
+          ip: "192.168.20.7"
+          purpose: "benchmark"
+      - targets: ['192.168.20.8:18090']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-04"
+          service: "custom"
+          task: "matrix_7k"
+          ip: "192.168.20.8"
+          purpose: "benchmark"
+      - targets: ['192.168.20.7:18100']
+        labels:
+          cluster: "swarm-lab"
+          role: "worker"
+          node: "node-03"
+          service: "custom"
+          task: "matrix_8k"
+          ip: "192.168.20.7"
           purpose: "benchmark"

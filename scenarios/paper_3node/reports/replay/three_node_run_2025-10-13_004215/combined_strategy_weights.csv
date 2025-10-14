@@ -1,0 +1,10 @@
+strategy,service_type,metric,service,weight,mean,std,samples
+spread,factorial,factorial_execution_time_seconds,fact_100000,0.8138059567326632,0.1416687064289969,0.0164610405028616,21
+spread,factorial,factorial_execution_time_seconds,fact_300000,0.1311815511826134,0.8788647194302203,0.0331130165728003,21
+spread,factorial,factorial_execution_time_seconds,fact_500000,0.0550124920847233,2.0957210409041656,0.1039819038637465,21
+spread,matrix,matrix_multiplication_time_seconds,matrix_4000,0.6676334703926478,1.3786542939529425,0.1350456756655748,21
+spread,matrix,matrix_multiplication_time_seconds,matrix_5000,0.3323665296073522,2.7693394754005567,0.2573569758766358,20
+manual,factorial,factorial_execution_time_seconds,fact_300000,1.0,0.8924467225716355,0.0484404314586297,21
+manual,matrix,matrix_multiplication_time_seconds,matrix_5000,1.0,3.1589836059522765,0.5219883336255186,21
+auto,factorial,factorial_execution_time_seconds,fact_100000,1.0,0.1299417210008999,0.0093692483323345,21
+auto,matrix,matrix_multiplication_time_seconds,matrix_5000,1.0,2.912599503199817,0.7171999026812066,20

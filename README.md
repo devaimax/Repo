@@ -1,19 +1,40 @@
 # Docker Swarm Scheduling Experiments
 
-This repository hosts a reproducible environment for evaluating three Docker Swarm
-placement strategies:
+This repository now contains two fully isolated scenarios built on the same
+collector and service code:
 
-1. **Spread (baseline)** – the default Swarm policy with no resource awareness.
-2. **Manual weighting** – the Ramavat & Patel (2024) algorithm using user-supplied
-   CPU/Memory weights.
-3. **Automatic weighting** – our telemetry-driven implementation that derives
-   weights from live Prometheus metrics.
+* **paper_3node** – an exact reproduction of the Ramavat & Patel (2024) baseline
+  using only the manager + node‑01 + node‑02. Outputs live under
+  `scenarios/paper_3node/reports` and the tailored compose/Prometheus files live
+  in `scenarios/paper_3node/compose`.
+* **realistic_5node** – the heterogeneous five-node lab with extra factorial and
+  matrix workloads. All configuration sits under
+  `scenarios/realistic_5node/compose`, and metrics are written to
+  `scenarios/realistic_5node/reports`.
 
-The monitoring stack (Prometheus, Grafana, Elasticsearch, cAdvisor, Node
-Exporter) is deployed via `docker-compose.yml` as Swarm stack `monitor`. The
-factorial and matrix services expose execution time metrics that are captured in
-CSV/Prometheus for analysis, while Elasticsearch offers an optional search store
-for enhanced scenarios.
+Shared Python tooling (manual/auto schedulers, exporters, cache helpers) remains
+in `collector/`, while Docker images stay under `services/`. Use the scenario
+scripts to avoid mixing configurations.
+
+```
+scenarios/
+  paper_3node/
+    compose/        # minimal compose + Prometheus files
+    scripts/        # deploy + replay helpers
+    reports/        # generated Word/Excel outputs per run
+  realistic_5node/
+    compose/
+    scripts/
+    reports/
+```
+
+Top-level helpers:
+
+* `run_three_node_strategy.sh` – drains node‑03/node‑04, redeploys the paper
+  stack, and replays Spread → Manual → Auto.
+* `run_five_node_strategy.sh` – reactivates node‑03/node‑04, redeploys the
+  realistic stack, and replays the same strategies.
+* `run_complete_workflow.sh` – sequentially runs both scenarios (deploy + replay).
 
 ## Deploy or refresh the monitoring stack
 
@@ -44,7 +65,22 @@ compose file and swaps in `prometheus.enhanced.yml` for the config. In this mode
 Elasticsearch is reachable on the manager via `http://<manager-ip>:9200/`.
 
 Ensure all targets are healthy before running experiments (`check_services.sh`
-and `check_targets.py` are available for quick verification).
+and `check_targets.py` are available for quick verification). Scenario deploy
+scripts call `deploy_monitoring.sh`/`redeploy_monitor.sh` with the appropriate
+`CONFIG_ROOT`, so you rarely need to invoke those scripts directly.
+
+## Node & service layout (current scenario)
+
+The stack now targets a manager plus four heterogeneous workers:
+
+- `Master` (`192.168.20.35`): Swarm manager + monitoring stack only.
+- `node-01` (`192.168.20.5`): `fact_100k` → `18000`, `matrix_4k` → `18030`.
+- `node-02` (`192.168.20.6`): `fact_300k` → `18010`, `matrix_5k` → `18040`.
+- `node-03` (`192.168.20.7`): `fact_200k` → `18060`, `matrix_6k` → `18080`, `matrix_8k` → `18100`.
+- `node-04` (`192.168.20.8`): `fact_400k` → `18070`, `fact_500k` → `18020`, `matrix_7k` → `18090`.
+
+Prometheus configs (baseline and enhanced) scrape these static endpoints, so
+update IPs/hostnames here if nodes change.
 
 ## 1. Spread baseline
 
@@ -127,7 +163,7 @@ directly, provide hostname aliases so scheduling decisions map overlay IPs back
 to Docker node names:
 
 ```bash
-export NODE_ALIAS_MAP=10.0.2.16=node-01,10.0.2.17=node-02
+export NODE_ALIAS_MAP=192.168.20.5=node-01,192.168.20.6=node-02,192.168.20.7=node-03,192.168.20.8=node-04
 python3 collector/replay_strategies.py --prom-url http://localhost:9090 --skip-spread
 ```
 
